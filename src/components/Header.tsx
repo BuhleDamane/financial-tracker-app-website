@@ -57,6 +57,7 @@ const Header: React.FC<HeaderProps> = ({
                   variant="outline-primary"
                   className="d-flex align-items-center"
                   id="userDropdown"
+                  onClick={onLogin}
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >

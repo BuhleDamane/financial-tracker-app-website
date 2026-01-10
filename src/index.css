@@ -175,3 +175,62 @@ h1, h2, h3, h4, h5, h6 {
   border-color: var(--secondary-color);
   box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
 }
+/* Landing Page Styles */
+.landing-page {
+  font-family: 'Roboto', 'Poppins', sans-serif;
+}
+
+.hero-section {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+}
+
+.feature-card {
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+}
+
+/* Animation for feature icons */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.feature-card .feature-icon {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Responsive adjustments for landing page */
+@media (max-width: 768px) {
+  .hero-section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  .display-4 {
+    font-size: 2.5rem;
+  }
+  
+  .lead {
+    font-size: 1.1rem;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Button animations */
+.btn-hover-grow {
+  transition: all 0.3s ease;
+}
+
+.btn-hover-grow:hover {
+  transform: scale(1.05);
+}

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
+import LandingPage from './components/LandingPage';
 import Dashboard from './components/Dashboard';
 import InvestmentSection from './components/investments/InvestmentSection';
 import IncomeSection from './components/income/IncomeSection';
@@ -15,7 +16,7 @@ import './styles/App.css';
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('dashboard');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Start with false for landing page
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -36,34 +37,85 @@ function App() {
     setIsLoggedIn(false);
   };
 
+  // Protected Route Component
+  const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+    if (!isLoggedIn) {
+      return <Navigate to="/" />;
+    }
+    return <>{children}</>;
+  };
+
   return (
     <Router>
       <div className="app-container">
-        <Header 
-          sidebarOpen={sidebarOpen}
-          toggleSidebar={toggleSidebar}
-          isLoggedIn={isLoggedIn}
-          onLogin={handleLogin}
-          onLogout={handleLogout}
-        />
-        
-        <Sidebar 
-          isOpen={sidebarOpen}
-          activeSection={activeSection}
-          onSectionChange={handleSectionChange}
-        />
+        {/* Only show Header and Sidebar when logged in */}
+        {isLoggedIn ? (
+          <>
+            <Header 
+              sidebarOpen={sidebarOpen}
+              toggleSidebar={toggleSidebar}
+              isLoggedIn={isLoggedIn}
+              onLogin={handleLogin}
+              onLogout={handleLogout}
+            />
+            
+            <Sidebar 
+              isOpen={sidebarOpen}
+              activeSection={activeSection}
+              onSectionChange={handleSectionChange}
+            />
+          </>
+        ) : null}
 
-        <main className={`main-content ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+        <main className={isLoggedIn ? `main-content ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}` : ''}>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/investments" element={<InvestmentSection />} />
-            <Route path="/income" element={<IncomeSection />} />
-            <Route path="/budget" element={<BudgetSection />} />
-            <Route path="/goals" element={<GoalsSection />} />
-            <Route path="/education" element={<EducationSection />} />
-            <Route path="/tax" element={<TaxSection />} />
-            <Route path="/settings" element={<SettingsSection />} />
+            {/* Public Routes */}
+            <Route path="/" element={<LandingPage />} />
+            
+            {/* Protected Routes - Only accessible when logged in */}
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/investments" element={
+              <ProtectedRoute>
+                <InvestmentSection />
+              </ProtectedRoute>
+            } />
+            <Route path="/income" element={
+              <ProtectedRoute>
+                <IncomeSection />
+              </ProtectedRoute>
+            } />
+            <Route path="/budget" element={
+              <ProtectedRoute>
+                <BudgetSection />
+              </ProtectedRoute>
+            } />
+            <Route path="/goals" element={
+              <ProtectedRoute>
+                <GoalsSection />
+              </ProtectedRoute>
+            } />
+            <Route path="/education" element={
+              <ProtectedRoute>
+                <EducationSection />
+              </ProtectedRoute>
+            } />
+            <Route path="/tax" element={
+              <ProtectedRoute>
+                <TaxSection />
+              </ProtectedRoute>
+            } />
+            <Route path="/settings" element={
+              <ProtectedRoute>
+                <SettingsSection />
+              </ProtectedRoute>
+            } />
+            
+            {/* Redirect any unknown route to home */}
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
       </div>
