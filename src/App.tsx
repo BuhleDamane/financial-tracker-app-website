@@ -16,7 +16,7 @@ import './styles/App.css';
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('dashboard');
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Start with false for landing page
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -37,7 +37,6 @@ function App() {
     setIsLoggedIn(false);
   };
 
-  // Protected Route Component
   const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     if (!isLoggedIn) {
       return <Navigate to="/" />;
@@ -48,7 +47,6 @@ function App() {
   return (
     <Router>
       <div className="app-container">
-        {/* Only show Header and Sidebar when logged in */}
         {isLoggedIn ? (
           <>
             <Header 
@@ -69,10 +67,8 @@ function App() {
 
         <main className={isLoggedIn ? `main-content ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}` : ''}>
           <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/" element={<LandingPage onLogin={handleLogin} />} />
             
-            {/* Protected Routes - Only accessible when logged in */}
             <Route path="/dashboard" element={
               <ProtectedRoute>
                 <Dashboard />
@@ -114,7 +110,6 @@ function App() {
               </ProtectedRoute>
             } />
             
-            {/* Redirect any unknown route to home */}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
