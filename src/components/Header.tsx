@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navbar, Container, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { FiMenu, FiX, FiBell, FiUser, FiLogOut, FiSettings } from 'react-icons/fi';
@@ -19,115 +19,291 @@ const Header: React.FC<HeaderProps> = ({
   onLogout
 }) => {
   const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-    <Navbar bg="white" expand="lg" fixed="top" className="shadow-sm" style={{ height: '70px' }}>
-      <Container fluid>
-        <div className="d-flex align-items-center">
-          <Button
-            onClick={toggleSidebar}
-            className="me-3 btn-custom"
-            aria-label="Toggle sidebar"
-            style={{
-              backgroundColor: sidebarOpen ? '#e0f7f4' : 'transparent',
-              border: '1.5px solid #dee2e6',
-              color: '#2c3e50',
-            }}
-          >
-            {sidebarOpen ? <FiX size={20} /> : <FiMenu size={20} />}
-          </Button>
+    <>
+      <style>{`
+        .header-navbar {
+          height: 70px;
+          border-bottom: 1px solid #e9ecef;
+          z-index: 1030;
+        }
 
-          <Navbar.Brand
-            href="/"
-            className="ubuntu-font d-flex align-items-center"
-            style={{ textDecoration: 'none' }}
-          >
-            <div
-              className="d-flex align-items-center justify-content-center me-2 rounded-circle"
-              style={{ width: '40px', height: '40px', backgroundColor: '#17a2b8' }}
+        .sidebar-toggle-btn {
+          background-color: transparent;
+          border: 1.5px solid #dee2e6;
+          color: #2c3e50;
+          border-radius: 8px;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          transition: background-color 0.2s, border-color 0.2s;
+          padding: 0;
+        }
+        .sidebar-toggle-btn.active,
+        .sidebar-toggle-btn:hover {
+          background-color: #e0f7f4;
+          border-color: #b2ebf2;
+          color: #17a2b8;
+        }
+
+        .brand-logo {
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          gap: 10px;
+          min-width: 0;
+        }
+        .brand-logo-circle {
+          width: 36px;
+          height: 36px;
+          min-width: 36px;
+          background-color: #17a2b8;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .brand-logo-text {
+          font-weight: 700;
+          color: #2c3e50;
+          font-size: 1rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        /* Hide brand text on very small screens */
+        @media (max-width: 360px) {
+          .brand-logo-text {
+            display: none;
+          }
+        }
+
+        .header-actions {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-shrink: 0;
+        }
+
+        .notif-btn {
+          background-color: transparent;
+          border: 1.5px solid #dee2e6;
+          color: #2c3e50;
+          border-radius: 8px;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          padding: 0;
+          flex-shrink: 0;
+          transition: background-color 0.2s, border-color 0.2s;
+        }
+        .notif-btn:hover {
+          background-color: #f8f9fa;
+          border-color: #ced4da;
+        }
+        .notif-badge {
+          position: absolute;
+          top: -4px;
+          right: -4px;
+          background-color: #ff6b6b;
+          color: #fff;
+          font-size: 0.55rem;
+          font-weight: 700;
+          border-radius: 999px;
+          padding: 2px 5px;
+          line-height: 1;
+          border: 2px solid #fff;
+        }
+
+        .user-btn {
+          background-color: #e0f7f4;
+          border: 1.5px solid #b2ebf2;
+          color: #17a2b8;
+          border-radius: 8px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 0 14px;
+          font-weight: 500;
+          white-space: nowrap;
+          transition: background-color 0.2s;
+          cursor: pointer;
+        }
+        .user-btn:hover {
+          background-color: #b2ebf2;
+        }
+
+        /* On small screens, show only icon in user button */
+        @media (max-width: 575px) {
+          .user-btn-label {
+            display: none;
+          }
+          .user-btn {
+            padding: 0;
+            width: 40px;
+            justify-content: center;
+          }
+        }
+
+        .login-btn {
+          height: 40px;
+          border-radius: 8px;
+          font-weight: 500;
+          white-space: nowrap;
+          padding: 0 16px;
+        }
+        @media (max-width: 400px) {
+          .login-btn {
+            font-size: 0.8rem;
+            padding: 0 10px;
+          }
+        }
+
+        /* Custom dropdown */
+        .header-dropdown {
+          position: relative;
+        }
+        .header-dropdown-menu {
+          position: absolute;
+          top: calc(100% + 8px);
+          right: 0;
+          min-width: 180px;
+          background: #fff;
+          border-radius: 10px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+          border: 1px solid #e9ecef;
+          padding: 6px;
+          z-index: 2000;
+          animation: dropdownFadeIn 0.15s ease;
+        }
+        @keyframes dropdownFadeIn {
+          from { opacity: 0; transform: translateY(-6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .header-dropdown-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 10px 12px;
+          border-radius: 7px;
+          font-size: 0.9rem;
+          color: #2c3e50;
+          cursor: pointer;
+          border: none;
+          background: none;
+          width: 100%;
+          text-align: left;
+          transition: background-color 0.15s;
+        }
+        .header-dropdown-item:hover {
+          background-color: #f0fdfe;
+        }
+        .header-dropdown-item.danger {
+          color: #ff6b6b;
+        }
+        .header-dropdown-item.danger:hover {
+          background-color: #fff5f5;
+        }
+        .header-dropdown-divider {
+          height: 1px;
+          background-color: #e9ecef;
+          margin: 4px 0;
+        }
+      `}</style>
+
+      <Navbar
+        bg="white"
+        expand="lg"
+        fixed="top"
+        className="shadow-sm header-navbar"
+      >
+        <Container fluid className="px-3 px-md-4">
+          {/* Left: Toggle + Brand */}
+          <div className="d-flex align-items-center gap-2 gap-sm-3" style={{ minWidth: 0, flex: 1 }}>
+            <button
+              className={`sidebar-toggle-btn ${sidebarOpen ? 'active' : ''}`}
+              onClick={toggleSidebar}
+              aria-label="Toggle sidebar"
             >
-              <span className="text-white fw-bold ubuntu-font">FT</span>
-            </div>
-            <span className="fw-bold" style={{ color: '#2c3e50' }}>
-              Financial Tracker
-            </span>
-          </Navbar.Brand>
-        </div>
+              {sidebarOpen ? <FiX size={18} /> : <FiMenu size={18} />}
+            </button>
 
-        <div className="d-flex align-items-center gap-2">
-          <Button
-            className="position-relative btn-custom"
-            style={{
-              backgroundColor: 'transparent',
-              border: '1.5px solid #dee2e6',
-              color: '#2c3e50',
-            }}
-          >
-            <FiBell size={20} />
-            <span
-              className="position-absolute top-0 start-100 translate-middle rounded-pill"
-              style={{
-                fontSize: '0.6rem',
-                padding: '2px 5px',
-                backgroundColor: '#ff6b6b',
-                color: '#fff',
-                fontFamily: 'Roboto, sans-serif',
-              }}
-            >
-              3
-            </span>
-          </Button>
+            <a href="/" className="brand-logo">
+              <div className="brand-logo-circle">
+                <span className="text-white fw-bold ubuntu-font" style={{ fontSize: '0.8rem' }}>FT</span>
+              </div>
+              <span className="brand-logo-text ubuntu-font">Financial Tracker</span>
+            </a>
+          </div>
 
-          {isLoggedIn ? (
-            <div className="dropdown">
+          {/* Right: Actions */}
+          <div className="header-actions">
+            {/* Notification bell */}
+            <button className="notif-btn" aria-label="Notifications">
+              <FiBell size={18} />
+              <span className="notif-badge">3</span>
+            </button>
+
+            {isLoggedIn ? (
+              <div className="header-dropdown">
+                <button
+                  className="user-btn roboto-font"
+                  onClick={() => setDropdownOpen(prev => !prev)}
+                  aria-label="User menu"
+                >
+                  <FiUser size={17} />
+                  <span className="user-btn-label">John Doe</span>
+                </button>
+
+                {dropdownOpen && (
+                  <>
+                    {/* Backdrop to close on outside click */}
+                    <div
+                      style={{ position: 'fixed', inset: 0, zIndex: 1999 }}
+                      onClick={() => setDropdownOpen(false)}
+                    />
+                    <div className="header-dropdown-menu">
+                      <button
+                        className="header-dropdown-item roboto-font"
+                        onClick={() => { navigate('/settings'); setDropdownOpen(false); }}
+                      >
+                        <FiSettings size={15} style={{ color: '#17a2b8' }} />
+                        Settings
+                      </button>
+                      <div className="header-dropdown-divider" />
+                      <button
+                        className="header-dropdown-item danger roboto-font"
+                        onClick={() => { onLogout(); setDropdownOpen(false); }}
+                      >
+                        <FiLogOut size={15} />
+                        Logout
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
               <Button
-                id="userDropdown"
-                className="btn-custom d-flex align-items-center roboto-font"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                style={{
-                  backgroundColor: '#e0f7f4',
-                  border: '1.5px solid #b2ebf2',
-                  color: '#17a2b8',
-                }}
+                className="btn-custom btn-primary-custom text-white roboto-font login-btn"
+                onClick={onLogin}
               >
-                <FiUser className="me-2" />
-                <span className="d-none d-md-inline">John Doe</span>
+                Login / Sign Up
               </Button>
-              <ul className="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="userDropdown">
-                <li>
-                  <button
-                    className="dropdown-item roboto-font d-flex align-items-center py-2"
-                    onClick={() => navigate('/settings')}
-                  >
-                    <FiSettings className="me-2" style={{ color: '#17a2b8' }} />
-                    Settings
-                  </button>
-                </li>
-                <li><hr className="dropdown-divider" /></li>
-                <li>
-                  <button
-                    className="dropdown-item roboto-font d-flex align-items-center py-2"
-                    style={{ color: '#ff6b6b' }}
-                    onClick={onLogout}
-                  >
-                    <FiLogOut className="me-2" />
-                    Logout
-                  </button>
-                </li>
-              </ul>
-            </div>
-          ) : (
-            <Button
-              className="btn-custom btn-primary-custom text-white roboto-font"
-              onClick={onLogin}
-            >
-              Login / Sign Up
-            </Button>
-          )}
-        </div>
-      </Container>
-    </Navbar>
+            )}
+          </div>
+        </Container>
+      </Navbar>
+    </>
   );
 };
 
