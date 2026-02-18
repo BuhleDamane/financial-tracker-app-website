@@ -107,10 +107,10 @@ const EducationSection: React.FC = () => {
   ];
 
   return (
-    <Container fluid>
+    <Container fluid style={{ paddingTop: '90px' }}>
       <Row className="mb-4">
         <Col>
-          <div className="text-center mb-5" style={{ paddingLeft: '40px', padding: '25px' }}>
+          <div className="text-center mb-5" style={{ paddingLeft: '40px', paddingRight: '40px' }}>
             <div className="mb-3" style={{ color: '#17a2b8', fontSize: '3rem' }}>
               <FiBook />
             </div>
@@ -137,16 +137,16 @@ const EducationSection: React.FC = () => {
 
               <Row className="g-4">
                 {quickSteps.map((step) => (
-                  <Col key={step.number} md={3} className="text-center">
+                  <Col key={step.number} xs={6} md={3} className="text-center">
                     <div
-                      className="rounded-circle d-inline-flex align-items-center justify-content-center p-4 mb-3"
-                      style={{ backgroundColor: step.bg, width: '80px', height: '80px' }}
+                      className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                      style={{ backgroundColor: step.bg, width: '64px', height: '64px' }}
                     >
                       <span className="ubuntu-font fw-bold fs-4" style={{ color: step.color }}>
                         {step.number}
                       </span>
                     </div>
-                    <h6 className="ubuntu-font fw-bold">{step.label}</h6>
+                    <h6 className="ubuntu-font fw-bold" style={{ fontSize: '0.9rem' }}>{step.label}</h6>
                     <small className="text-muted roboto-font">{step.sub}</small>
                   </Col>
                 ))}
@@ -167,7 +167,7 @@ const EducationSection: React.FC = () => {
           <Col key={index} lg={6} className="mb-4">
             <Card className="border-0 shadow-sm h-100 card-hover">
               <Card.Body>
-                <div className="d-flex align-items-start mb-4">
+                <div className="d-flex align-items-start mb-4 flex-wrap gap-2">
                   <div
                     className="rounded-circle p-3 me-3 d-flex align-items-center justify-content-center flex-shrink-0"
                     style={{
@@ -222,7 +222,7 @@ const EducationSection: React.FC = () => {
 
               <Row className="g-4">
                 {interactiveTools.map((tool, index) => (
-                  <Col key={index} md={4}>
+                  <Col key={index} xs={12} sm={4}>
                     <Card className="border-0 h-100" style={{ backgroundColor: '#f8f9fa' }}>
                       <Card.Body className="text-center">
                         <div
@@ -243,7 +243,7 @@ const EducationSection: React.FC = () => {
         </Col>
       </Row>
 
-      <Row className="mt-5">
+      <Row className="mt-5 mb-5">
         <Col>
           <Card className="border-0 shadow-sm">
             <Card.Body className="p-4">
