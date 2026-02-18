@@ -110,7 +110,7 @@ const EducationSection: React.FC = () => {
     <Container fluid>
       <Row className="mb-4">
         <Col>
-          <div className="text-center mb-5" style={{ paddingLeft: '40px' }}>
+          <div className="text-center mb-5" style={{ paddingLeft: '40px', padding: '25px' }}>
             <div className="mb-3" style={{ color: '#17a2b8', fontSize: '3rem' }}>
               <FiBook />
             </div>
