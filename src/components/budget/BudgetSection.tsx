@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Card, Button, Form, ProgressBar } from 'react-bootstrap';
 import { FiPlus, FiTrash2, FiAlertCircle, FiCheckCircle, FiDollarSign } from 'react-icons/fi';
 import BudgetChart from './BudgetChart';
-import { mockBudgetItems } from '../../data/mockData';
 import type { BudgetItem } from '../../data/mockData';
 
 const BudgetSection: React.FC = () => {
-  const [budgetItems, setBudgetItems] = useState<BudgetItem[]>(mockBudgetItems);
+  const [budgetItems, setBudgetItems] = useState<BudgetItem[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [newItem, setNewItem] = useState<Omit<BudgetItem, 'id'>>({
     category: '',
