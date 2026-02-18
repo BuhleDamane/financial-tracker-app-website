@@ -11,7 +11,7 @@ const Dashboard: React.FC = () => {
       <Row className="mb-4">
         <Col>
           <div className="d-flex align-items-center justify-content-between flex-wrap gap-3">
-            <div>
+            <div style={{ paddingTop: '45px' }}>
               <h1 className="ubuntu-font fw-bold mb-2" style={{ color: '#2c3e50', fontSize: '2rem' }}>
                 Welcome to Financial Tracker! 👋
               </h1>
