@@ -56,7 +56,7 @@ const InvestmentSection: React.FC = () => {
   };
 
   return (
-    <Container fluid style={{ paddingTop: '90px' }}>
+    <Container fluid style={{ paddingTop: '80px' }}>
       <Row className="mb-4">
         <Col>
           <div
