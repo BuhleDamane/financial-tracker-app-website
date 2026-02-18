@@ -37,20 +37,23 @@ const IncomeSection: React.FC = () => {
   const netIncome = calculateNetIncome();
 
   return (
-    <Container fluid>
+    <Container fluid style={{ paddingTop: '90px' }}>
       <Row className="mb-4">
         <Col>
-          <div className="d-flex justify-content-between align-items-center">
-            <div style={{ paddingLeft: '40px', padding: '45px' }}>
-              <h1 className="ubuntu-font fw-bold" style={{ color: '#2c3e50' }}>
+          <div
+            className="d-flex flex-wrap justify-content-between align-items-start align-items-sm-center gap-3"
+            style={{ paddingLeft: '40px' }}
+          >
+            <div>
+              <h1 className="ubuntu-font fw-bold mb-1" style={{ color: '#2c3e50' }}>
                 Income Streams
               </h1>
-              <p className="text-muted roboto-font">
+              <p className="text-muted roboto-font mb-0">
                 Track all your sources of income and associated expenses
               </p>
             </div>
             <Button
-              className="btn-custom btn-primary-custom text-white d-flex align-items-center roboto-font"
+              className="btn-custom btn-primary-custom text-white d-flex align-items-center roboto-font flex-shrink-0"
               onClick={() => setShowForm(true)}
             >
               <FiPlus className="me-2" />
@@ -61,7 +64,7 @@ const IncomeSection: React.FC = () => {
       </Row>
 
       <Row className="mb-4">
-        <Col lg={4} md={6} className="mb-3">
+        <Col xs={12} md={4} className="mb-3">
           <Card className="border-0 shadow-sm h-100">
             <Card.Body className="text-center">
               <div
@@ -70,13 +73,13 @@ const IncomeSection: React.FC = () => {
               >
                 <FiDollarSign size={30} />
               </div>
-              <h3 className="ubuntu-font fw-bold">R{calculateTotalIncome().toLocaleString()}</h3>
+              <h3 className="ubuntu-font fw-bold">R{calculateTotalIncome().toLocaleString('en-ZA')}</h3>
               <p className="text-muted roboto-font mb-0">Total Monthly Income</p>
             </Card.Body>
           </Card>
         </Col>
 
-        <Col lg={4} md={6} className="mb-3">
+        <Col xs={12} md={4} className="mb-3">
           <Card className="border-0 shadow-sm h-100">
             <Card.Body className="text-center">
               <div
@@ -85,13 +88,13 @@ const IncomeSection: React.FC = () => {
               >
                 <FiBriefcase size={30} />
               </div>
-              <h3 className="ubuntu-font fw-bold">R{calculateTotalExpenses().toLocaleString()}</h3>
+              <h3 className="ubuntu-font fw-bold">R{calculateTotalExpenses().toLocaleString('en-ZA')}</h3>
               <p className="text-muted roboto-font mb-0">Total Monthly Expenses</p>
             </Card.Body>
           </Card>
         </Col>
 
-        <Col lg={4} md={6} className="mb-3">
+        <Col xs={12} md={4} className="mb-3">
           <Card className="border-0 shadow-sm h-100">
             <Card.Body className="text-center">
               <div
@@ -109,7 +112,7 @@ const IncomeSection: React.FC = () => {
                 className="ubuntu-font fw-bold"
                 style={{ color: netIncome >= 0 ? '#51cf66' : '#ff6b6b' }}
               >
-                R{netIncome.toLocaleString()}
+                R{netIncome.toLocaleString('en-ZA')}
               </h3>
               <p className="text-muted roboto-font mb-0">Net Monthly Income</p>
             </Card.Body>
@@ -117,7 +120,7 @@ const IncomeSection: React.FC = () => {
         </Col>
       </Row>
 
-      <Row>
+      <Row className="mb-5">
         <Col>
           <Card className="border-0 shadow-sm">
             <Card.Body>
@@ -179,7 +182,7 @@ const IncomeSection: React.FC = () => {
                                   className="category-badge roboto-font"
                                   style={{ backgroundColor: '#d4edda', color: '#155724', border: '1px solid #c3e6cb' }}
                                 >
-                                  R{income.monthlyIncome.toLocaleString()}
+                                  R{income.monthlyIncome.toLocaleString('en-ZA')}
                                 </span>
                               </td>
                               <td>
@@ -187,7 +190,7 @@ const IncomeSection: React.FC = () => {
                                   className="category-badge roboto-font"
                                   style={{ backgroundColor: '#fff3cd', color: '#856404', border: '1px solid #ffeaa7' }}
                                 >
-                                  R{income.monthlyExpenses.toLocaleString()}
+                                  R{income.monthlyExpenses.toLocaleString('en-ZA')}
                                 </span>
                               </td>
                               <td>
@@ -199,7 +202,7 @@ const IncomeSection: React.FC = () => {
                                     border: `1px solid ${net >= 0 ? '#b2ebf2' : '#f5c6cb'}`,
                                   }}
                                 >
-                                  R{net.toLocaleString()}
+                                  R{net.toLocaleString('en-ZA')}
                                 </span>
                               </td>
                               <td>
@@ -238,31 +241,31 @@ const IncomeSection: React.FC = () => {
                   </div>
 
                   <div className="mt-4 pt-3 border-top">
-                    <div className="row">
-                      <div className="col-md-4">
-                        <div className="d-flex justify-content-between mb-2">
+                    <Row>
+                      <Col xs={12} md={4} className="mb-2">
+                        <div className="d-flex justify-content-between">
                           <span className="text-muted roboto-font">Total Income:</span>
-                          <span className="roboto-font fw-bold">R{calculateTotalIncome().toLocaleString()}</span>
+                          <span className="roboto-font fw-bold">R{calculateTotalIncome().toLocaleString('en-ZA')}</span>
                         </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className="d-flex justify-content-between mb-2">
+                      </Col>
+                      <Col xs={12} md={4} className="mb-2">
+                        <div className="d-flex justify-content-between">
                           <span className="text-muted roboto-font">Total Expenses:</span>
-                          <span className="roboto-font fw-bold">R{calculateTotalExpenses().toLocaleString()}</span>
+                          <span className="roboto-font fw-bold">R{calculateTotalExpenses().toLocaleString('en-ZA')}</span>
                         </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className="d-flex justify-content-between mb-2">
+                      </Col>
+                      <Col xs={12} md={4} className="mb-2">
+                        <div className="d-flex justify-content-between">
                           <span className="text-muted roboto-font">Overall Net Income:</span>
                           <span
                             className="roboto-font fw-bold"
                             style={{ color: netIncome >= 0 ? '#51cf66' : '#ff6b6b' }}
                           >
-                            R{netIncome.toLocaleString()}
+                            R{netIncome.toLocaleString('en-ZA')}
                           </span>
                         </div>
-                      </div>
-                    </div>
+                      </Col>
+                    </Row>
                   </div>
                 </>
               )}
