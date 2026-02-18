@@ -59,17 +59,19 @@ const InvestmentSection: React.FC = () => {
     <Container fluid>
       <Row className="mb-4">
         <Col>
-          <div className="d-flex justify-content-between align-items-center">
-            <div style={{ paddingLeft: '40px', padding: '45px' }}>
-              <h1 className="ubuntu-font fw-bold" style={{ color: '#2c3e50' }}>
+          <div className="d-flex flex-wrap justify-content-between align-items-start align-items-sm-center gap-3"
+            style={{ paddingLeft: '40px' }}
+          >
+            <div>
+              <h1 className="ubuntu-font fw-bold mb-1" style={{ color: '#2c3e50' }}>
                 Investment Portfolio
               </h1>
-              <p className="text-muted roboto-font">
+              <p className="text-muted roboto-font mb-0">
                 Track and manage all your investments in one place
               </p>
             </div>
             <Button
-              className="btn-custom btn-primary-custom text-white d-flex align-items-center roboto-font"
+              className="btn-custom btn-primary-custom text-white d-flex align-items-center roboto-font flex-shrink-0"
               onClick={() => setShowForm(true)}
             >
               <FiPlus className="me-2" />
@@ -106,7 +108,7 @@ const InvestmentSection: React.FC = () => {
                             fontWeight: 600,
                           }}
                         >
-                          R{calculateTotalByType(type.key).toLocaleString()}
+                          R{calculateTotalByType(type.key).toLocaleString('en-ZA')}
                         </span>
                       </div>
                     }
@@ -162,7 +164,7 @@ const InvestmentSection: React.FC = () => {
                                     <div className="d-flex justify-content-between mb-1">
                                       <span className="text-muted roboto-font">Amount Invested</span>
                                       <span className="fw-bold roboto-font">
-                                        R{investment.amount.toLocaleString()}
+                                        R{investment.amount.toLocaleString('en-ZA')}
                                       </span>
                                     </div>
                                     {investment.numberOfStocks ? (
