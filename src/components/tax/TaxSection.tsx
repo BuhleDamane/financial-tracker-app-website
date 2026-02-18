@@ -3,9 +3,9 @@ import { Container, Row, Col, Card, Form, Button, Table } from 'react-bootstrap'
 import { FaCalculator, FaPercent, FaDollarSign, FaInfoCircle, FaChartLine, FaPiggyBank } from 'react-icons/fa';
 
 const TaxSection: React.FC = () => {
-  const [annualIncome, setAnnualIncome] = useState<number>(500000);
-  const [medicalAidContributions, setMedicalAidContributions] = useState<number>(30000);
-  const [retirementContributions, setRetirementContributions] = useState<number>(100000);
+  const [annualIncome, setAnnualIncome] = useState<number>(0);
+  const [medicalAidContributions, setMedicalAidContributions] = useState<number>(0);
+  const [retirementContributions, setRetirementContributions] = useState<number>(0);
   const [otherDeductions, setOtherDeductions] = useState<number>(0);
 
   const taxBrackets = [
@@ -24,39 +24,30 @@ const TaxSection: React.FC = () => {
     additionalDependents: 246
   };
 
-  const calculateTax = () => {
-    let taxableIncome = annualIncome;
+  const formatCurrency = (value: number) => {
+    return `R${Math.round(value).toLocaleString('en-ZA')}`;
+  };
 
+  const calculateTax = () => {
     const maxRetirementDeduction = Math.min(annualIncome * 0.275, 350000);
     const retirementDeduction = Math.min(retirementContributions, maxRetirementDeduction);
-    taxableIncome -= retirementDeduction;
+
+    let taxableIncome = Math.max(0, annualIncome - retirementDeduction - otherDeductions);
 
     let tax = 0;
-    let bracketUsed = null;
-
     for (const bracket of taxBrackets) {
-      if (taxableIncome > bracket.min) {
-        const taxableInBracket = Math.min(taxableIncome, bracket.max) - bracket.min;
-        tax += taxableInBracket * bracket.rate;
-        bracketUsed = bracket;
-      } else {
-        break;
-      }
-    }
-
-    if (bracketUsed && taxableIncome > bracketUsed.max) {
-      tax += bracketUsed.fixed;
+      if (taxableIncome <= bracket.min) break;
+      const taxableInBracket = Math.min(taxableIncome, bracket.max === Infinity ? taxableIncome : bracket.max) - bracket.min;
+      tax = bracket.fixed + taxableInBracket * bracket.rate;
     }
 
     const medicalCredits = (medicalTaxCredits.mainMember + medicalTaxCredits.firstDependent) * 12;
     tax = Math.max(0, tax - medicalCredits);
 
-    taxableIncome -= otherDeductions;
-
     const monthlyTax = tax / 12;
     const netAnnualIncome = annualIncome - tax;
     const netMonthlyIncome = netAnnualIncome / 12;
-    const effectiveTaxRate = (tax / annualIncome) * 100;
+    const effectiveTaxRate = annualIncome > 0 ? (tax / annualIncome) * 100 : 0;
 
     return {
       grossAnnualIncome: annualIncome,
@@ -82,10 +73,10 @@ const TaxSection: React.FC = () => {
   };
 
   const statCards = [
-    { icon: <FaDollarSign size={28} />, value: `R${Math.round(results.annualTax).toLocaleString()}`, label: 'Annual Tax Liability', color: '#17a2b8', bg: '#e0f7f4' },
+    { icon: <FaDollarSign size={28} />, value: formatCurrency(results.annualTax), label: 'Annual Tax Liability', color: '#17a2b8', bg: '#e0f7f4' },
     { icon: <FaPercent size={28} />, value: `${results.effectiveTaxRate.toFixed(1)}%`, label: 'Effective Tax Rate', color: '#51cf66', bg: '#d4edda' },
-    { icon: <FaChartLine size={28} />, value: `R${Math.round(results.netMonthlyIncome).toLocaleString()}`, label: 'Net Monthly Income', color: '#17a2b8', bg: '#e0f7f4' },
-    { icon: <FaPiggyBank size={28} />, value: `R${Math.round(results.retirementDeduction).toLocaleString()}`, label: 'Retirement Deduction', color: '#ffc107', bg: '#fff3cd' },
+    { icon: <FaChartLine size={28} />, value: formatCurrency(results.netMonthlyIncome), label: 'Net Monthly Income', color: '#17a2b8', bg: '#e0f7f4' },
+    { icon: <FaPiggyBank size={28} />, value: formatCurrency(results.retirementDeduction), label: 'Retirement Deduction', color: '#ffc107', bg: '#fff3cd' },
   ];
 
   return (
@@ -133,11 +124,11 @@ const TaxSection: React.FC = () => {
                   </Form.Label>
                   <Form.Control
                     type="number"
-                    value={annualIncome}
+                    value={annualIncome || ''}
                     onChange={(e) => setAnnualIncome(parseFloat(e.target.value) || 0)}
                     min="0"
                     step="1000"
-                    placeholder=" "
+                    placeholder="Enter annual income"
                   />
                   <Form.Text className="text-muted roboto-font">
                     Your total annual income before deductions
@@ -148,11 +139,11 @@ const TaxSection: React.FC = () => {
                   <Form.Label className="roboto-font fw-medium">Retirement Contributions (R)</Form.Label>
                   <Form.Control
                     type="number"
-                    value={retirementContributions}
+                    value={retirementContributions || ''}
                     onChange={(e) => setRetirementContributions(parseFloat(e.target.value) || 0)}
                     min="0"
                     step="1000"
-                    placeholder=" "
+                    placeholder="Enter retirement contributions"
                   />
                   <Form.Text className="text-muted roboto-font">
                     Maximum deductible: 27.5% of income or R350,000
@@ -163,11 +154,11 @@ const TaxSection: React.FC = () => {
                   <Form.Label className="roboto-font fw-medium">Medical Aid Contributions (R)</Form.Label>
                   <Form.Control
                     type="number"
-                    value={medicalAidContributions}
+                    value={medicalAidContributions || ''}
                     onChange={(e) => setMedicalAidContributions(parseFloat(e.target.value) || 0)}
                     min="0"
                     step="1000"
-                    placeholder=" "
+                    placeholder="Enter medical aid contributions"
                   />
                   <Form.Text className="text-muted roboto-font">
                     Annual medical aid contributions
@@ -178,11 +169,11 @@ const TaxSection: React.FC = () => {
                   <Form.Label className="roboto-font fw-medium">Other Deductions (R)</Form.Label>
                   <Form.Control
                     type="number"
-                    value={otherDeductions}
+                    value={otherDeductions || ''}
                     onChange={(e) => setOtherDeductions(parseFloat(e.target.value) || 0)}
                     min="0"
                     step="1000"
-                    placeholder=" "
+                    placeholder="Enter other deductions"
                   />
                   <Form.Text className="text-muted roboto-font">
                     Other tax-deductible expenses
@@ -253,28 +244,28 @@ const TaxSection: React.FC = () => {
                   <tbody>
                     <tr>
                       <td className="roboto-font">Gross Income</td>
-                      <td className="roboto-font fw-bold">R{results.grossAnnualIncome.toLocaleString()}</td>
-                      <td className="text-muted roboto-font">R{Math.round(results.grossMonthlyIncome).toLocaleString()}</td>
+                      <td className="roboto-font fw-bold">{formatCurrency(results.grossAnnualIncome)}</td>
+                      <td className="text-muted roboto-font">{formatCurrency(results.grossMonthlyIncome)}</td>
                     </tr>
                     <tr>
                       <td className="roboto-font">Taxable Income</td>
-                      <td className="roboto-font fw-bold">R{Math.round(results.taxableIncome).toLocaleString()}</td>
-                      <td className="text-muted roboto-font">R{Math.round(results.taxableIncome / 12).toLocaleString()}</td>
+                      <td className="roboto-font fw-bold">{formatCurrency(results.taxableIncome)}</td>
+                      <td className="text-muted roboto-font">{formatCurrency(results.taxableIncome / 12)}</td>
                     </tr>
                     <tr>
                       <td className="roboto-font">Tax Liability</td>
-                      <td className="roboto-font fw-bold" style={{ color: '#ff6b6b' }}>R{Math.round(results.annualTax).toLocaleString()}</td>
-                      <td className="text-muted roboto-font">R{Math.round(results.monthlyTax).toLocaleString()}</td>
+                      <td className="roboto-font fw-bold" style={{ color: '#ff6b6b' }}>{formatCurrency(results.annualTax)}</td>
+                      <td className="text-muted roboto-font">{formatCurrency(results.monthlyTax)}</td>
                     </tr>
                     <tr>
                       <td className="roboto-font">Medical Tax Credits</td>
-                      <td className="roboto-font fw-bold" style={{ color: '#51cf66' }}>R{results.medicalCredits.toLocaleString()}</td>
-                      <td className="text-muted roboto-font">R{Math.round(results.medicalCredits / 12).toLocaleString()}</td>
+                      <td className="roboto-font fw-bold" style={{ color: '#51cf66' }}>{formatCurrency(results.medicalCredits)}</td>
+                      <td className="text-muted roboto-font">{formatCurrency(results.medicalCredits / 12)}</td>
                     </tr>
                     <tr style={{ backgroundColor: '#e0f7f4' }}>
                       <td className="roboto-font fw-bold">Net Income</td>
-                      <td className="roboto-font fw-bold">R{Math.round(results.netAnnualIncome).toLocaleString()}</td>
-                      <td className="roboto-font fw-bold">R{Math.round(results.netMonthlyIncome).toLocaleString()}</td>
+                      <td className="roboto-font fw-bold">{formatCurrency(results.netAnnualIncome)}</td>
+                      <td className="roboto-font fw-bold">{formatCurrency(results.netMonthlyIncome)}</td>
                     </tr>
                   </tbody>
                 </Table>
@@ -299,7 +290,7 @@ const TaxSection: React.FC = () => {
                     {taxBrackets.map((bracket, index) => (
                       <tr key={index}>
                         <td className="roboto-font">
-                          R{bracket.min.toLocaleString()} — {bracket.max === Infinity ? 'Above' : `R${bracket.max.toLocaleString()}`}
+                          R{bracket.min.toLocaleString('en-ZA')} — {bracket.max === Infinity ? 'Above' : `R${bracket.max.toLocaleString('en-ZA')}`}
                         </td>
                         <td>
                           <span className="category-badge roboto-font" style={getTaxBracketStyle(bracket.rate)}>
@@ -307,7 +298,7 @@ const TaxSection: React.FC = () => {
                           </span>
                         </td>
                         <td className="roboto-font">
-                          {bracket.fixed > 0 ? `R${bracket.fixed.toLocaleString()}` : '—'}
+                          {bracket.fixed > 0 ? `R${bracket.fixed.toLocaleString('en-ZA')}` : '—'}
                         </td>
                       </tr>
                     ))}
