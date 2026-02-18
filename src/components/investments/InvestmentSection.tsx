@@ -3,11 +3,10 @@ import { Container, Row, Col, Card, Button, Tabs, Tab } from 'react-bootstrap';
 import { FiPlus, FiEdit2, FiTrash2, FiTrendingUp } from 'react-icons/fi';
 import InvestmentForm from './InvestmentForm';
 import InvestmentChart from './InvestmentChart';
-import { mockInvestments } from '../../data/mockData';
 import type { Investment } from '../../data/mockData';
 
 const InvestmentSection: React.FC = () => {
-  const [investments, setInvestments] = useState<Investment[]>(mockInvestments);
+  const [investments, setInvestments] = useState<Investment[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingInvestment, setEditingInvestment] = useState<Investment | null>(null);
 
