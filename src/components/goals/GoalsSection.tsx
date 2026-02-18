@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { FiPlus, FiTarget, FiCalendar, FiTrendingUp, FiTrash2 } from 'react-icons/fi';
 import GoalProgress from './GoalProgress';
-import { mockGoals } from '../../data/mockData';
 import type { Goal } from '../../data/mockData';
 
 const GoalsSection: React.FC = () => {
-  const [goals, setGoals] = useState<Goal[]>(mockGoals);
+  const [goals, setGoals] = useState<Goal[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [newGoal, setNewGoal] = useState<Omit<Goal, 'id' | 'progress'>>({
     title: '',
