@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Card, Button, Table } from 'react-bootstrap';
 import { FiPlus, FiEdit2, FiTrash2, FiBriefcase, FiDollarSign } from 'react-icons/fi';
 import IncomeForm from './IncomeForm';
-import { mockIncomeStreams } from '../../data/mockData';
 import type { IncomeStream } from '../../data/mockData';
 
 const IncomeSection: React.FC = () => {
-  const [incomeStreams, setIncomeStreams] = useState<IncomeStream[]>(mockIncomeStreams);
+  const [incomeStreams, setIncomeStreams] = useState<IncomeStream[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingIncome, setEditingIncome] = useState<IncomeStream | null>(null);
 
