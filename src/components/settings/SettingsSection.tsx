@@ -5,15 +5,15 @@ import { FiUser, FiLock, FiBell, FiShield, FiTrash2, FiSave, FiAlertTriangle } f
 const SettingsSection: React.FC = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [formData, setFormData] = useState({
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
-    phone: '+27 123 456 7890',
-    dateOfBirth: '1990-01-01',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    dateOfBirth: '',
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-    twoFactorEnabled: true,
+    twoFactorEnabled: false,
     emailNotifications: true,
     pushNotifications: true,
     budgetAlerts: true,
@@ -110,7 +110,7 @@ const SettingsSection: React.FC = () => {
                             name="firstName"
                             value={formData.firstName}
                             onChange={handleInputChange}
-                            placeholder=" "
+                            placeholder="Enter first name"
                           />
                         </Form.Group>
                       </Col>
@@ -122,7 +122,7 @@ const SettingsSection: React.FC = () => {
                             name="lastName"
                             value={formData.lastName}
                             onChange={handleInputChange}
-                            placeholder=" "
+                            placeholder="Enter last name"
                           />
                         </Form.Group>
                       </Col>
@@ -134,7 +134,7 @@ const SettingsSection: React.FC = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleInputChange}
-                            placeholder=" "
+                            placeholder="Enter email address"
                           />
                         </Form.Group>
                       </Col>
@@ -146,7 +146,7 @@ const SettingsSection: React.FC = () => {
                             name="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            placeholder=" "
+                            placeholder="Enter phone number"
                           />
                         </Form.Group>
                       </Col>
@@ -158,7 +158,6 @@ const SettingsSection: React.FC = () => {
                             name="dateOfBirth"
                             value={formData.dateOfBirth}
                             onChange={handleInputChange}
-                            placeholder=" "
                           />
                         </Form.Group>
                       </Col>
@@ -202,7 +201,7 @@ const SettingsSection: React.FC = () => {
                             name="currentPassword"
                             value={formData.currentPassword}
                             onChange={handleInputChange}
-                            placeholder=" "
+                            placeholder="Enter current password"
                           />
                         </Form.Group>
                       </Col>
@@ -214,7 +213,7 @@ const SettingsSection: React.FC = () => {
                             name="newPassword"
                             value={formData.newPassword}
                             onChange={handleInputChange}
-                            placeholder=" "
+                            placeholder="Enter new password"
                           />
                         </Form.Group>
                       </Col>
@@ -226,7 +225,7 @@ const SettingsSection: React.FC = () => {
                             name="confirmPassword"
                             value={formData.confirmPassword}
                             onChange={handleInputChange}
-                            placeholder=" "
+                            placeholder="Confirm new password"
                           />
                         </Form.Group>
                       </Col>
