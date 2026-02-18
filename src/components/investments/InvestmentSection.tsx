@@ -56,10 +56,11 @@ const InvestmentSection: React.FC = () => {
   };
 
   return (
-    <Container fluid>
+    <Container fluid style={{ paddingTop: '90px' }}>
       <Row className="mb-4">
         <Col>
-          <div className="d-flex flex-wrap justify-content-between align-items-start align-items-sm-center gap-3"
+          <div
+            className="d-flex flex-wrap justify-content-between align-items-start align-items-sm-center gap-3"
             style={{ paddingLeft: '40px' }}
           >
             <div>
