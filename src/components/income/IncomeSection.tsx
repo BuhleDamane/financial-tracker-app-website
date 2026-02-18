@@ -41,7 +41,7 @@ const IncomeSection: React.FC = () => {
       <Row className="mb-4">
         <Col>
           <div className="d-flex justify-content-between align-items-center">
-            <div style={{ paddingLeft: '40px' }}>
+            <div style={{ paddingLeft: '40px', padding: '45px' }}>
               <h1 className="ubuntu-font fw-bold" style={{ color: '#2c3e50' }}>
                 Income Streams
               </h1>
