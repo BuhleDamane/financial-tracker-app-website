@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar, Container, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { FiMenu, FiX, FiBell, FiUser, FiLogOut, FiSettings } from 'react-icons/fi';
+import { FiMenu, FiX, FiUser, FiLogOut, FiSettings } from 'react-icons/fi';
 
 interface HeaderProps {
   sidebarOpen: boolean;
@@ -77,7 +77,6 @@ const Header: React.FC<HeaderProps> = ({
           text-overflow: ellipsis;
         }
 
-        /* Hide brand text on very small screens */
         @media (max-width: 360px) {
           .brand-logo-text {
             display: none;
@@ -89,39 +88,6 @@ const Header: React.FC<HeaderProps> = ({
           align-items: center;
           gap: 8px;
           flex-shrink: 0;
-        }
-
-        .notif-btn {
-          background-color: transparent;
-          border: 1.5px solid #dee2e6;
-          color: #2c3e50;
-          border-radius: 8px;
-          width: 40px;
-          height: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          position: relative;
-          padding: 0;
-          flex-shrink: 0;
-          transition: background-color 0.2s, border-color 0.2s;
-        }
-        .notif-btn:hover {
-          background-color: #f8f9fa;
-          border-color: #ced4da;
-        }
-        .notif-badge {
-          position: absolute;
-          top: -4px;
-          right: -4px;
-          background-color: #ff6b6b;
-          color: #fff;
-          font-size: 0.55rem;
-          font-weight: 700;
-          border-radius: 999px;
-          padding: 2px 5px;
-          line-height: 1;
-          border: 2px solid #fff;
         }
 
         .user-btn {
@@ -143,7 +109,6 @@ const Header: React.FC<HeaderProps> = ({
           background-color: #b2ebf2;
         }
 
-        /* On small screens, show only icon in user button */
         @media (max-width: 575px) {
           .user-btn-label {
             display: none;
@@ -169,7 +134,6 @@ const Header: React.FC<HeaderProps> = ({
           }
         }
 
-        /* Custom dropdown */
         .header-dropdown {
           position: relative;
         }
@@ -248,12 +212,6 @@ const Header: React.FC<HeaderProps> = ({
 
           {/* Right: Actions */}
           <div className="header-actions">
-            {/* Notification bell */}
-            <button className="notif-btn" aria-label="Notifications">
-              <FiBell size={18} />
-              <span className="notif-badge">3</span>
-            </button>
-
             {isLoggedIn ? (
               <div className="header-dropdown">
                 <button
@@ -267,7 +225,6 @@ const Header: React.FC<HeaderProps> = ({
 
                 {dropdownOpen && (
                   <>
-                    {/* Backdrop to close on outside click */}
                     <div
                       style={{ position: 'fixed', inset: 0, zIndex: 1999 }}
                       onClick={() => setDropdownOpen(false)}
