@@ -95,20 +95,23 @@ const GoalsSection: React.FC = () => {
   ];
 
   return (
-    <Container fluid>
+    <Container fluid style={{ paddingTop: '90px' }}>
       <Row className="mb-4">
         <Col>
-          <div className="d-flex justify-content-between align-items-center">
-            <div style={{ paddingLeft: '40px', padding: '45px' }}>
-              <h1 className="ubuntu-font fw-bold" style={{ color: '#2c3e50' }}>
+          <div
+            className="d-flex flex-wrap justify-content-between align-items-start align-items-sm-center gap-3"
+            style={{ paddingLeft: '40px' }}
+          >
+            <div>
+              <h1 className="ubuntu-font fw-bold mb-1" style={{ color: '#2c3e50' }}>
                 Goals & Progress
               </h1>
-              <p className="text-muted roboto-font">
+              <p className="text-muted roboto-font mb-0">
                 Set financial goals and track your progress towards achieving them
               </p>
             </div>
             <Button
-              className="btn-custom btn-primary-custom text-white d-flex align-items-center roboto-font"
+              className="btn-custom btn-primary-custom text-white d-flex align-items-center roboto-font flex-shrink-0"
               onClick={() => setShowForm(!showForm)}
             >
               <FiPlus className="me-2" />
@@ -120,7 +123,7 @@ const GoalsSection: React.FC = () => {
 
       <Row className="mb-4">
         {statCards.map((stat, index) => (
-          <Col key={index} lg={3} md={6} className="mb-3">
+          <Col key={index} xs={6} lg={3} className="mb-3">
             <Card className="border-0 shadow-sm h-100">
               <Card.Body className="text-center">
                 <div
@@ -149,7 +152,7 @@ const GoalsSection: React.FC = () => {
                     type="text"
                     value={newGoal.title}
                     onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
-                    placeholder=" "
+                    placeholder="e.g. Emergency Fund, New Car"
                   />
                 </Form.Group>
               </Col>
@@ -173,11 +176,11 @@ const GoalsSection: React.FC = () => {
                   <Form.Label className="roboto-font fw-medium">Target Amount (R)</Form.Label>
                   <Form.Control
                     type="number"
-                    value={newGoal.targetAmount}
+                    value={newGoal.targetAmount || ''}
                     onChange={(e) => setNewGoal({ ...newGoal, targetAmount: parseFloat(e.target.value) || 0 })}
                     min="0"
                     step="0.01"
-                    placeholder=" "
+                    placeholder="Enter target amount"
                   />
                 </Form.Group>
               </Col>
@@ -186,11 +189,11 @@ const GoalsSection: React.FC = () => {
                   <Form.Label className="roboto-font fw-medium">Current Amount Saved (R)</Form.Label>
                   <Form.Control
                     type="number"
-                    value={newGoal.currentAmount}
+                    value={newGoal.currentAmount || ''}
                     onChange={(e) => setNewGoal({ ...newGoal, currentAmount: parseFloat(e.target.value) || 0 })}
                     min="0"
                     step="0.01"
-                    placeholder=" "
+                    placeholder="Enter amount already saved"
                   />
                 </Form.Group>
               </Col>
@@ -201,7 +204,6 @@ const GoalsSection: React.FC = () => {
                     type="date"
                     value={newGoal.deadline}
                     onChange={(e) => setNewGoal({ ...newGoal, deadline: e.target.value })}
-                    placeholder=" "
                   />
                 </Form.Group>
               </Col>
@@ -221,7 +223,7 @@ const GoalsSection: React.FC = () => {
                       <div
                         className="progress-bar"
                         style={{
-                          width: `${newGoal.targetAmount > 0 ? (newGoal.currentAmount / newGoal.targetAmount) * 100 : 0}%`,
+                          width: `${newGoal.targetAmount > 0 ? Math.min((newGoal.currentAmount / newGoal.targetAmount) * 100, 100) : 0}%`,
                           backgroundColor: '#51cf66',
                         }}
                       />
@@ -252,7 +254,7 @@ const GoalsSection: React.FC = () => {
       )}
 
       <Row>
-        <Col lg={8}>
+        <Col lg={8} className="mb-4 mb-lg-0">
           <Card className="border-0 shadow-sm mb-4">
             <Card.Body>
               <div className="d-flex justify-content-between align-items-center mb-4">
@@ -261,7 +263,7 @@ const GoalsSection: React.FC = () => {
                   className="category-badge roboto-font"
                   style={{ backgroundColor: '#e0f7f4', color: '#17a2b8', border: '1px solid #b2ebf2' }}
                 >
-                  R{totals.totalTarget.toLocaleString()} Total Target
+                  R{totals.totalTarget.toLocaleString('en-ZA')} Total Target
                 </span>
               </div>
 
@@ -280,7 +282,7 @@ const GoalsSection: React.FC = () => {
                           <div className="d-flex justify-content-between align-items-start mb-3">
                             <div>
                               <h5 className="ubuntu-font fw-bold mb-1">{goal.title}</h5>
-                              <div className="d-flex align-items-center gap-2 mb-2">
+                              <div className="d-flex align-items-center gap-2 mb-2 flex-wrap">
                                 <span
                                   className="category-badge text-capitalize roboto-font"
                                   style={getCategoryBadgeStyle(goal.category)}
@@ -299,10 +301,10 @@ const GoalsSection: React.FC = () => {
                             </div>
                             <div className="text-end">
                               <div className="roboto-font fw-bold" style={{ color: '#17a2b8' }}>
-                                R{goal.currentAmount.toLocaleString()}
+                                R{goal.currentAmount.toLocaleString('en-ZA')}
                               </div>
                               <small className="text-muted roboto-font">
-                                of R{goal.targetAmount.toLocaleString()}
+                                of R{goal.targetAmount.toLocaleString('en-ZA')}
                               </small>
                             </div>
                           </div>
@@ -373,18 +375,18 @@ const GoalsSection: React.FC = () => {
               <div className="mb-4">
                 <div className="d-flex justify-content-between mb-2">
                   <span className="text-muted roboto-font">Total Target</span>
-                  <span className="roboto-font fw-bold">R{totals.totalTarget.toLocaleString()}</span>
+                  <span className="roboto-font fw-bold">R{totals.totalTarget.toLocaleString('en-ZA')}</span>
                 </div>
                 <div className="d-flex justify-content-between mb-2">
                   <span className="text-muted roboto-font">Current Amount</span>
                   <span className="roboto-font fw-bold" style={{ color: '#51cf66' }}>
-                    R{totals.totalCurrent.toLocaleString()}
+                    R{totals.totalCurrent.toLocaleString('en-ZA')}
                   </span>
                 </div>
                 <div className="d-flex justify-content-between mb-2">
                   <span className="text-muted roboto-font">Remaining</span>
                   <span className="roboto-font fw-bold">
-                    R{(totals.totalTarget - totals.totalCurrent).toLocaleString()}
+                    R{(totals.totalTarget - totals.totalCurrent).toLocaleString('en-ZA')}
                   </span>
                 </div>
               </div>
@@ -429,7 +431,7 @@ const GoalsSection: React.FC = () => {
                       </div>
                       <small className="text-muted roboto-font d-block">
                         {categoryGoals.length} goal{categoryGoals.length !== 1 ? 's' : ''} •{' '}
-                        R{categoryCurrent.toLocaleString()} of R{categoryTotal.toLocaleString()}
+                        R{categoryCurrent.toLocaleString('en-ZA')} of R{categoryTotal.toLocaleString('en-ZA')}
                       </small>
                     </div>
                   );
