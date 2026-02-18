@@ -94,20 +94,23 @@ const BudgetSection: React.FC = () => {
   };
 
   return (
-    <Container fluid>
+    <Container fluid style={{ paddingTop: '90px' }}>
       <Row className="mb-4">
         <Col>
-          <div className="d-flex justify-content-between align-items-center">
-            <div style={{ paddingLeft: '40px', padding: '45px' }}>
-              <h1 className="ubuntu-font fw-bold" style={{ color: '#2c3e50' }}>
+          <div
+            className="d-flex flex-wrap justify-content-between align-items-start align-items-sm-center gap-3"
+            style={{ paddingLeft: '40px' }}
+          >
+            <div>
+              <h1 className="ubuntu-font fw-bold mb-1" style={{ color: '#2c3e50' }}>
                 Monthly Budget
               </h1>
-              <p className="text-muted roboto-font">
+              <p className="text-muted roboto-font mb-0">
                 Track your expenses and stay within your budget limits
               </p>
             </div>
             <Button
-              className="btn-custom btn-primary-custom text-white d-flex align-items-center roboto-font"
+              className="btn-custom btn-primary-custom text-white d-flex align-items-center roboto-font flex-shrink-0"
               onClick={() => setShowForm(!showForm)}
             >
               <FiPlus className="me-2" />
@@ -134,6 +137,7 @@ const BudgetSection: React.FC = () => {
                   <Form.Control
                     type="text"
                     value={newItem.category}
+                    placeholder="e.g. Rent, Groceries"
                     onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
                   />
                 </Form.Group>
@@ -155,7 +159,8 @@ const BudgetSection: React.FC = () => {
                   <Form.Label className="roboto-font fw-medium">Budgeted Amount (R)</Form.Label>
                   <Form.Control
                     type="number"
-                    value={newItem.amount}
+                    value={newItem.amount || ''}
+                    placeholder="Enter budgeted amount"
                     onChange={(e) => setNewItem({ ...newItem, amount: parseFloat(e.target.value) || 0 })}
                     min="0"
                     step="0.01"
@@ -167,7 +172,8 @@ const BudgetSection: React.FC = () => {
                   <Form.Label className="roboto-font fw-medium">Allocated/Spent Amount (R)</Form.Label>
                   <Form.Control
                     type="number"
-                    value={newItem.allocatedAmount}
+                    value={newItem.allocatedAmount || ''}
+                    placeholder="Enter amount spent"
                     onChange={(e) => setNewItem({ ...newItem, allocatedAmount: parseFloat(e.target.value) || 0 })}
                     min="0"
                     step="0.01"
@@ -197,7 +203,7 @@ const BudgetSection: React.FC = () => {
       )}
 
       <Row className="mb-4">
-        <Col lg={8}>
+        <Col lg={8} className="mb-4 mb-lg-0">
           <Card className="border-0 shadow-sm">
             <Card.Body>
               <div className="d-flex justify-content-between align-items-center mb-4">
@@ -254,10 +260,10 @@ const BudgetSection: React.FC = () => {
                               </span>
                             </td>
                             <td>
-                              <div className="roboto-font fw-bold">R{item.amount.toLocaleString()}</div>
+                              <div className="roboto-font fw-bold">R{item.amount.toLocaleString('en-ZA')}</div>
                             </td>
                             <td>
-                              <div className="roboto-font fw-bold">R{item.allocatedAmount.toLocaleString()}</div>
+                              <div className="roboto-font fw-bold">R{item.allocatedAmount.toLocaleString('en-ZA')}</div>
                               <small className="text-muted roboto-font">
                                 {percentage.toFixed(1)}% of budget
                               </small>
@@ -301,11 +307,11 @@ const BudgetSection: React.FC = () => {
               <div className="mb-4">
                 <div className="d-flex justify-content-between mb-2">
                   <span className="text-muted roboto-font">Total Budget</span>
-                  <span className="roboto-font fw-bold">R{totals.budgeted.toLocaleString()}</span>
+                  <span className="roboto-font fw-bold">R{totals.budgeted.toLocaleString('en-ZA')}</span>
                 </div>
                 <div className="d-flex justify-content-between mb-2">
                   <span className="text-muted roboto-font">Total Allocated</span>
-                  <span className="roboto-font fw-bold">R{totals.allocated.toLocaleString()}</span>
+                  <span className="roboto-font fw-bold">R{totals.allocated.toLocaleString('en-ZA')}</span>
                 </div>
                 <div className="d-flex justify-content-between mb-2">
                   <span className="text-muted roboto-font">Budget Remaining</span>
@@ -313,7 +319,7 @@ const BudgetSection: React.FC = () => {
                     className="roboto-font fw-bold"
                     style={{ color: totals.remaining >= 0 ? '#51cf66' : '#ff6b6b' }}
                   >
-                    R{totals.remaining.toLocaleString()}
+                    R{totals.remaining.toLocaleString('en-ZA')}
                   </span>
                 </div>
               </div>
@@ -348,7 +354,7 @@ const BudgetSection: React.FC = () => {
                 <div className="mb-3">
                   <div className="d-flex justify-content-between mb-1">
                     <span className="roboto-font">Non-Negotiable</span>
-                    <span className="roboto-font fw-medium">R{totals.nonNegotiable.toLocaleString()}</span>
+                    <span className="roboto-font fw-medium">R{totals.nonNegotiable.toLocaleString('en-ZA')}</span>
                   </div>
                   <ProgressBar
                     now={(totals.nonNegotiable / totals.budgeted) * 100}
@@ -366,7 +372,7 @@ const BudgetSection: React.FC = () => {
                 <div>
                   <div className="d-flex justify-content-between mb-1">
                     <span className="roboto-font">Negotiable</span>
-                    <span className="roboto-font fw-medium">R{totals.negotiable.toLocaleString()}</span>
+                    <span className="roboto-font fw-medium">R{totals.negotiable.toLocaleString('en-ZA')}</span>
                   </div>
                   <ProgressBar
                     now={(totals.negotiable / totals.budgeted) * 100}
