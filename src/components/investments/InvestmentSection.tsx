@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Card, Button, Tabs, Tab, Badge } from 'react-bootstrap';
-import { FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { Container, Row, Col, Card, Button, Tabs, Tab } from 'react-bootstrap';
+import { FiPlus, FiEdit2, FiTrash2, FiTrendingUp } from 'react-icons/fi';
 import InvestmentForm from './InvestmentForm';
 import InvestmentChart from './InvestmentChart';
 import { mockInvestments } from '../../data/mockData';
@@ -12,16 +12,22 @@ const InvestmentSection: React.FC = () => {
   const [editingInvestment, setEditingInvestment] = useState<Investment | null>(null);
 
   const investmentTypes = [
-    { key: 'stocks', label: 'Stocks', color: 'primary' },
-    { key: 'crypto', label: 'Crypto', color: 'warning' },
-    { key: 'pension', label: 'Pension Fund', color: 'info' },
-    { key: 'retirement', label: 'Retirement Annuity', color: 'success' },
-    { key: 'other', label: 'Other', color: 'secondary' },
+    { key: 'stocks', label: 'Stocks' },
+    { key: 'crypto', label: 'Crypto' },
+    { key: 'pension', label: 'Pension Fund' },
+    { key: 'retirement', label: 'Retirement Annuity' },
+    { key: 'other', label: 'Other' },
   ];
+
+  const termColors: Record<string, string> = {
+    long: '#51cf66',
+    intermediate: '#ffc107',
+    short: '#17a2b8',
+  };
 
   const handleAddInvestment = (investment: Investment) => {
     if (editingInvestment) {
-      setInvestments(investments.map(inv => 
+      setInvestments(investments.map(inv =>
         inv.id === investment.id ? investment : inv
       ));
       setEditingInvestment(null);
@@ -55,17 +61,16 @@ const InvestmentSection: React.FC = () => {
       <Row className="mb-4">
         <Col>
           <div className="d-flex justify-content-between align-items-center">
-            <div>
+            <div style={{ paddingLeft: '40px', padding: '45px' }}>
               <h1 className="ubuntu-font fw-bold" style={{ color: '#2c3e50' }}>
                 Investment Portfolio
               </h1>
-              <p className="text-muted">
+              <p className="text-muted roboto-font">
                 Track and manage all your investments in one place
               </p>
             </div>
-            <Button 
-              variant="primary" 
-              className="btn-primary-custom d-flex align-items-center"
+            <Button
+              className="btn-custom btn-primary-custom text-white d-flex align-items-center roboto-font"
               onClick={() => setShowForm(true)}
             >
               <FiPlus className="me-2" />
@@ -91,29 +96,38 @@ const InvestmentSection: React.FC = () => {
                     key={type.key}
                     eventKey={type.key}
                     title={
-                      <div className="d-flex align-items-center">
+                      <div className="d-flex align-items-center roboto-font">
                         <span>{type.label}</span>
-                        <Badge bg={type.color} className="ms-2">
+                        <span
+                          className="ms-2 px-2 py-1 rounded-pill roboto-font"
+                          style={{
+                            backgroundColor: '#e0f7f4',
+                            color: '#17a2b8',
+                            fontSize: '0.75rem',
+                            fontWeight: 600,
+                          }}
+                        >
                           R{calculateTotalByType(type.key).toLocaleString()}
-                        </Badge>
+                        </span>
                       </div>
                     }
                   >
                     <div className="mt-3">
                       {getInvestmentsByType(type.key).length === 0 ? (
                         <div className="text-center py-5">
-                          <div className="mb-3">
-                            <div className="display-4 text-muted">📈</div>
-                          </div>
-                          <h4 className="mb-2">No {type.label} Investments Yet</h4>
-                          <p className="text-muted mb-4">
+                          <FiTrendingUp size={48} className="mb-3" style={{ color: '#17a2b8', opacity: 0.4 }} />
+                          <h5 className="ubuntu-font fw-bold mb-2">No {type.label} Investments Yet</h5>
+                          <p className="text-muted roboto-font mb-4">
                             You haven't added any {type.label.toLowerCase()} investments.
                           </p>
-                          <Button 
-                            variant="outline-primary"
-                            onClick={() => {
-                              setShowForm(true);
+                          <Button
+                            className="btn-custom roboto-font"
+                            style={{
+                              border: '1.5px solid #17a2b8',
+                              color: '#17a2b8',
+                              backgroundColor: 'transparent',
                             }}
+                            onClick={() => setShowForm(true)}
                           >
                             Add Your First {type.label} Investment
                           </Button>
@@ -122,43 +136,58 @@ const InvestmentSection: React.FC = () => {
                         <Row>
                           {getInvestmentsByType(type.key).map((investment) => (
                             <Col key={investment.id} lg={6} className="mb-3">
-                              <Card className="card-hover h-100">
+                              <Card className="card-hover h-100 border-0 shadow-sm">
                                 <Card.Body>
                                   <div className="d-flex justify-content-between align-items-start mb-2">
                                     <div>
-                                      <h5 className="fw-bold mb-1">{investment.company}</h5>
-                                      <p className="text-muted small mb-2">
+                                      <h5 className="ubuntu-font fw-bold mb-1" style={{ color: '#2c3e50' }}>
+                                        {investment.company}
+                                      </h5>
+                                      <p className="text-muted small roboto-font mb-2">
                                         {investment.stockName} • {investment.investmentSite}
                                       </p>
                                     </div>
-                                    <Badge 
-                                      bg={type.color} 
-                                      className={`text-uppercase ${investment.isTFSA ? 'bg-success' : ''}`}
+                                    <span
+                                      className="category-badge text-uppercase"
+                                      style={{
+                                        backgroundColor: investment.isTFSA ? '#d4edda' : '#e0f7f4',
+                                        color: investment.isTFSA ? '#155724' : '#17a2b8',
+                                        border: `1px solid ${investment.isTFSA ? '#c3e6cb' : '#b2ebf2'}`,
+                                      }}
                                     >
                                       {investment.isTFSA ? 'TFSA' : investment.type}
-                                    </Badge>
+                                    </span>
                                   </div>
-                                  
+
                                   <div className="mb-3">
                                     <div className="d-flex justify-content-between mb-1">
-                                      <span className="text-muted">Amount Invested</span>
-                                      <span className="fw-bold">
+                                      <span className="text-muted roboto-font">Amount Invested</span>
+                                      <span className="fw-bold roboto-font">
                                         R{investment.amount.toLocaleString()}
                                       </span>
                                     </div>
-                                    {investment.numberOfStocks && (
+                                    {investment.numberOfStocks ? (
                                       <div className="d-flex justify-content-between mb-1">
-                                        <span className="text-muted">Number of Stocks</span>
-                                        <span className="fw-bold">{investment.numberOfStocks}</span>
+                                        <span className="text-muted roboto-font">Number of Stocks</span>
+                                        <span className="fw-bold roboto-font">{investment.numberOfStocks}</span>
                                       </div>
-                                    )}
+                                    ) : null}
                                     <div className="d-flex justify-content-between mb-1">
-                                      <span className="text-muted">Date Invested</span>
-                                      <span>{new Date(investment.dateInvested).toLocaleDateString()}</span>
+                                      <span className="text-muted roboto-font">Date Invested</span>
+                                      <span className="roboto-font">
+                                        {new Date(investment.dateInvested).toLocaleDateString()}
+                                      </span>
                                     </div>
                                     <div className="d-flex justify-content-between">
-                                      <span className="text-muted">Investment Term</span>
-                                      <span className={`badge bg-${investment.investmentTerm === 'long' ? 'success' : investment.investmentTerm === 'intermediate' ? 'warning' : 'info'}`}>
+                                      <span className="text-muted roboto-font">Investment Term</span>
+                                      <span
+                                        className="category-badge text-capitalize"
+                                        style={{
+                                          backgroundColor: `${termColors[investment.investmentTerm]}22`,
+                                          color: termColors[investment.investmentTerm],
+                                          border: `1px solid ${termColors[investment.investmentTerm]}55`,
+                                        }}
+                                      >
                                         {investment.investmentTerm}
                                       </span>
                                     </div>
@@ -166,16 +195,26 @@ const InvestmentSection: React.FC = () => {
 
                                   <div className="d-flex justify-content-end gap-2">
                                     <Button
-                                      variant="outline-primary"
                                       size="sm"
                                       onClick={() => handleEdit(investment)}
+                                      style={{
+                                        border: '1.5px solid #17a2b8',
+                                        color: '#17a2b8',
+                                        backgroundColor: 'transparent',
+                                        borderRadius: '8px',
+                                      }}
                                     >
                                       <FiEdit2 />
                                     </Button>
                                     <Button
-                                      variant="outline-danger"
                                       size="sm"
                                       onClick={() => handleDelete(investment.id)}
+                                      style={{
+                                        border: '1.5px solid #ff6b6b',
+                                        color: '#ff6b6b',
+                                        backgroundColor: 'transparent',
+                                        borderRadius: '8px',
+                                      }}
                                     >
                                       <FiTrash2 />
                                     </Button>

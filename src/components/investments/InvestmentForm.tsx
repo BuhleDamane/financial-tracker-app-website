@@ -31,7 +31,7 @@ const InvestmentForm: React.FC<InvestmentFormProps> = ({ investment, onSubmit, o
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
-    
+
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
       setFormData(prev => ({ ...prev, [name]: checked }));
@@ -59,19 +59,24 @@ const InvestmentForm: React.FC<InvestmentFormProps> = ({ investment, onSubmit, o
 
   return (
     <Modal show={true} onHide={onClose} size="lg" centered>
-      <Modal.Header closeButton className="border-0 pb-0">
-        <Modal.Title className="ubuntu-font fw-bold">
+      <Modal.Header
+        closeButton
+        className="border-0 pb-0"
+        style={{ borderBottom: '2px solid #e0f7f4' }}
+      >
+        <Modal.Title className="ubuntu-font fw-bold" style={{ color: '#2c3e50' }}>
           {investment ? 'Edit Investment' : 'Add New Investment'}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+
+      <Modal.Body className="settings-form">
         <Form onSubmit={handleSubmit}>
           <Row className="g-3">
             <Col md={6}>
               <FloatingLabel controlId="type" label="Investment Type" className="mb-3">
-                <Form.Select 
-                  name="type" 
-                  value={formData.type} 
+                <Form.Select
+                  name="type"
+                  value={formData.type}
                   onChange={handleChange}
                   required
                 >
@@ -91,7 +96,7 @@ const InvestmentForm: React.FC<InvestmentFormProps> = ({ investment, onSubmit, o
                   name="company"
                   value={formData.company}
                   onChange={handleChange}
-                  placeholder="Standard Bank"
+                  placeholder=" "
                   required
                 />
               </FloatingLabel>
@@ -99,9 +104,9 @@ const InvestmentForm: React.FC<InvestmentFormProps> = ({ investment, onSubmit, o
 
             <Col md={6}>
               <FloatingLabel controlId="investmentSite" label="Investment Platform/Site" className="mb-3">
-                <Form.Select 
-                  name="investmentSite" 
-                  value={formData.investmentSite} 
+                <Form.Select
+                  name="investmentSite"
+                  value={formData.investmentSite}
                   onChange={handleChange}
                   required
                 >
@@ -120,7 +125,7 @@ const InvestmentForm: React.FC<InvestmentFormProps> = ({ investment, onSubmit, o
                   name="amount"
                   value={formData.amount}
                   onChange={handleChange}
-                  placeholder="10000"
+                  placeholder=" "
                   min="0"
                   step="0.01"
                   required
@@ -135,6 +140,7 @@ const InvestmentForm: React.FC<InvestmentFormProps> = ({ investment, onSubmit, o
                   name="dateInvested"
                   value={formData.dateInvested}
                   onChange={handleChange}
+                  placeholder=" "
                   required
                 />
               </FloatingLabel>
@@ -148,7 +154,7 @@ const InvestmentForm: React.FC<InvestmentFormProps> = ({ investment, onSubmit, o
                     name="numberOfStocks"
                     value={formData.numberOfStocks || ''}
                     onChange={handleChange}
-                    placeholder="50"
+                    placeholder=" "
                     min="0"
                   />
                 </FloatingLabel>
@@ -157,9 +163,9 @@ const InvestmentForm: React.FC<InvestmentFormProps> = ({ investment, onSubmit, o
 
             <Col md={6}>
               <FloatingLabel controlId="investmentTerm" label="Investment Term" className="mb-3">
-                <Form.Select 
-                  name="investmentTerm" 
-                  value={formData.investmentTerm} 
+                <Form.Select
+                  name="investmentTerm"
+                  value={formData.investmentTerm}
                   onChange={handleChange}
                   required
                 >
@@ -177,7 +183,7 @@ const InvestmentForm: React.FC<InvestmentFormProps> = ({ investment, onSubmit, o
                   name="stockName"
                   value={formData.stockName}
                   onChange={handleChange}
-                  placeholder="Standard Bank Group / Bitcoin"
+                  placeholder=" "
                   required
                 />
               </FloatingLabel>
@@ -190,14 +196,14 @@ const InvestmentForm: React.FC<InvestmentFormProps> = ({ investment, onSubmit, o
                   name="stockType"
                   value={formData.stockType}
                   onChange={handleChange}
-                  placeholder="Equity / Cryptocurrency"
+                  placeholder=" "
                   required
                 />
               </FloatingLabel>
             </Col>
 
             <Col md={6}>
-              <div className="mb-3">
+              <div className="mb-3 d-flex align-items-center" style={{ paddingTop: '0.75rem' }}>
                 <Form.Check
                   type="checkbox"
                   id="isTFSA"
@@ -205,17 +211,25 @@ const InvestmentForm: React.FC<InvestmentFormProps> = ({ investment, onSubmit, o
                   label="TFSA (Tax Free Savings Account)"
                   checked={formData.isTFSA}
                   onChange={handleChange}
+                  className="roboto-font"
                 />
               </div>
             </Col>
           </Row>
 
           <div className="d-flex justify-content-end gap-2 mt-4">
-            <Button variant="outline-secondary" onClick={onClose}>
+            <Button
+              variant="outline-secondary"
+              onClick={onClose}
+              className="btn-custom roboto-font"
+            >
               <FiX className="me-2" />
               Cancel
             </Button>
-            <Button type="submit" variant="primary" className="btn-primary-custom">
+            <Button
+              type="submit"
+              className="btn-custom btn-primary-custom text-white roboto-font"
+            >
               <FiSave className="me-2" />
               {investment ? 'Update Investment' : 'Save Investment'}
             </Button>

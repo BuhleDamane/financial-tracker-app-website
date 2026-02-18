@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar, Container, Button } from 'react-bootstrap';
-import { FiMenu, FiBell, FiUser, FiLogOut } from 'react-icons/fi';
+import { FiMenu, FiX, FiBell, FiUser, FiLogOut } from 'react-icons/fi';
 
 interface HeaderProps {
   sidebarOpen: boolean;
@@ -22,12 +22,12 @@ const Header: React.FC<HeaderProps> = ({
       <Container fluid>
         <div className="d-flex align-items-center">
           <Button
-            variant="outline-secondary"
+            variant={sidebarOpen ? 'secondary' : 'outline-secondary'}
             onClick={toggleSidebar}
             className="me-3"
             aria-label="Toggle sidebar"
           >
-            <FiMenu size={20} />
+            {sidebarOpen ? <FiX size={20} /> : <FiMenu size={20} />}
           </Button>
           
           <Navbar.Brand href="/" className="ubuntu-font d-flex align-items-center">

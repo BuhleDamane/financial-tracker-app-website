@@ -9,11 +9,11 @@ interface BudgetChartProps {
 }
 
 const BudgetChart: React.FC<BudgetChartProps> = ({ budgetItems }) => {
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+  const COLORS = ['#17a2b8', '#2c3e50', '#51cf66', '#ffc107', '#ff6b6b'];
 
   const calculateData = () => {
     const categoryMap: Record<string, number> = {};
-    
+
     budgetItems.forEach(item => {
       categoryMap[item.category] = (categoryMap[item.category] || 0) + item.amount;
     });
@@ -25,20 +25,16 @@ const BudgetChart: React.FC<BudgetChartProps> = ({ budgetItems }) => {
   };
 
   const calculateStatusData = () => {
-    const statusCounts = {
-      green: 0,
-      orange: 0,
-      red: 0
-    };
+    const statusCounts = { green: 0, orange: 0, red: 0 };
 
     budgetItems.forEach(item => {
       statusCounts[item.status]++;
     });
 
     return [
-      { name: 'Within Budget', value: statusCounts.green, color: '#27ae60' },
-      { name: 'Approaching Limit', value: statusCounts.orange, color: '#f39c12' },
-      { name: 'Over Budget', value: statusCounts.red, color: '#e74c3c' },
+      { name: 'Within Budget', value: statusCounts.green, color: '#51cf66' },
+      { name: 'Approaching Limit', value: statusCounts.orange, color: '#ffc107' },
+      { name: 'Over Budget', value: statusCounts.red, color: '#ff6b6b' },
     ];
   };
 
@@ -52,20 +48,18 @@ const BudgetChart: React.FC<BudgetChartProps> = ({ budgetItems }) => {
         <Card.Body>
           <div className="d-flex justify-content-between align-items-center mb-4">
             <div>
-              <Card.Title className="ubuntu-font fw-bold mb-1">
-                Budget Overview
-              </Card.Title>
-              <p className="text-muted small">Distribution of your budget across categories</p>
+              <Card.Title className="ubuntu-font fw-bold mb-1">Budget Overview</Card.Title>
+              <p className="text-muted small roboto-font">Distribution of your budget across categories</p>
             </div>
-            <div className="bg-primary-subtle p-2 rounded-circle">
-              <FiPieChart className="text-primary" size={24} />
+            <div className="p-2 rounded-circle" style={{ backgroundColor: '#e0f7f4' }}>
+              <FiPieChart style={{ color: '#17a2b8' }} size={24} />
             </div>
           </div>
-          
+
           <div className="text-center py-5">
-            <div className="display-1 text-muted mb-3">📊</div>
-            <h4 className="mb-2">No Budget Items Yet</h4>
-            <p className="text-muted">Add budget items to see your spending distribution</p>
+            <FiPieChart size={48} className="mb-3" style={{ color: '#17a2b8', opacity: 0.4 }} />
+            <h5 className="ubuntu-font fw-bold mb-2">No Budget Items Yet</h5>
+            <p className="text-muted roboto-font">Add budget items to see your spending distribution</p>
           </div>
         </Card.Body>
       </Card>
@@ -77,15 +71,13 @@ const BudgetChart: React.FC<BudgetChartProps> = ({ budgetItems }) => {
       <Card.Body>
         <div className="d-flex justify-content-between align-items-center mb-4">
           <div>
-            <Card.Title className="ubuntu-font fw-bold mb-1">
-              Budget Overview
-            </Card.Title>
-            <p className="text-muted small">
+            <Card.Title className="ubuntu-font fw-bold mb-1">Budget Overview</Card.Title>
+            <p className="text-muted small roboto-font">
               Total Budget: <strong className="text-dark">R{totalBudget.toLocaleString()}</strong>
             </p>
           </div>
-          <div className="bg-primary-subtle p-2 rounded-circle">
-            <FiPieChart className="text-primary" size={24} />
+          <div className="p-2 rounded-circle" style={{ backgroundColor: '#e0f7f4' }}>
+            <FiPieChart style={{ color: '#17a2b8' }} size={24} />
           </div>
         </div>
 
@@ -101,52 +93,44 @@ const BudgetChart: React.FC<BudgetChartProps> = ({ budgetItems }) => {
                     labelLine={false}
                     label={(entry) => `${entry.name}: ${((entry.value / totalBudget) * 100).toFixed(1)}%`}
                     outerRadius={100}
-                    fill="#8884d8"
                     dataKey="value"
                   >
                     {data.map((_entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip 
-              formatter={(value: number | string) => `R${Number(value).toFixed(2)}`}             
-
-/>
+                  <Tooltip formatter={(value: number | string) => `R${Number(value).toFixed(2)}`} />
                   <Legend />
                 </PieChart>
               </ResponsiveContainer>
             </div>
           </div>
-          
+
           <div className="col-lg-4">
             <div className="mt-4 mt-lg-0">
-              <h6 className="fw-bold mb-3">Budget Status</h6>
+              <h6 className="ubuntu-font fw-bold mb-3">Budget Status</h6>
               {statusData.map((item) => (
                 <div key={item.name} className="d-flex align-items-center mb-3">
-                  <div 
-                    className="rounded-circle me-3" 
-                    style={{
-                      width: '12px',
-                      height: '12px',
-                      backgroundColor: item.color
-                    }}
+                  <div
+                    className="rounded-circle me-3 flex-shrink-0"
+                    style={{ width: '12px', height: '12px', backgroundColor: item.color }}
                   />
                   <div className="flex-grow-1">
                     <div className="d-flex justify-content-between">
-                      <span className="fw-medium">{item.name}</span>
-                      <span className="fw-bold">{item.value} items</span>
+                      <span className="roboto-font fw-medium">{item.name}</span>
+                      <span className="roboto-font fw-bold">{item.value} items</span>
                     </div>
                     <div className="progress mt-1" style={{ height: '6px' }}>
-                      <div 
-                        className="progress-bar" 
-                        role="progressbar" 
-                        style={{ 
+                      <div
+                        className="progress-bar"
+                        role="progressbar"
+                        style={{
                           width: `${(item.value / budgetItems.length) * 100}%`,
                           backgroundColor: item.color
-                        }} 
+                        }}
                       />
                     </div>
-                    <small className="text-muted">
+                    <small className="text-muted roboto-font">
                       {((item.value / budgetItems.length) * 100).toFixed(1)}% of categories
                     </small>
                   </div>
