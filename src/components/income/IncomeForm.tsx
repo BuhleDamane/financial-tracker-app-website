@@ -26,8 +26,8 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onSubmit, onClose }) =>
   }, [income]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
-    
+    const { name, value } = e.target;
+
     if (name === 'monthlyIncome' || name === 'monthlyExpenses') {
       setFormData(prev => ({ ...prev, [name]: parseFloat(value) || 0 }));
     } else {
@@ -44,14 +44,21 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onSubmit, onClose }) =>
     onSubmit(incomeData);
   };
 
+  const netIncome = formData.monthlyIncome - formData.monthlyExpenses;
+
   return (
     <Modal show={true} onHide={onClose} size="lg" centered>
-      <Modal.Header closeButton className="border-0 pb-0">
-        <Modal.Title className="ubuntu-font fw-bold">
+      <Modal.Header
+        closeButton
+        className="border-0 pb-0"
+        style={{ borderBottom: '2px solid #e0f7f4' }}
+      >
+        <Modal.Title className="ubuntu-font fw-bold" style={{ color: '#2c3e50' }}>
           {income ? 'Edit Income Stream' : 'Add Income Stream'}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+
+      <Modal.Body className="settings-form">
         <Form onSubmit={handleSubmit}>
           <Row className="g-3">
             <Col md={6}>
@@ -61,7 +68,7 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onSubmit, onClose }) =>
                   name="company"
                   value={formData.company}
                   onChange={handleChange}
-                  placeholder="Tech Corp SA"
+                  placeholder=" "
                   required
                 />
               </FloatingLabel>
@@ -74,7 +81,7 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onSubmit, onClose }) =>
                   name="position"
                   value={formData.position}
                   onChange={handleChange}
-                  placeholder="Senior Developer"
+                  placeholder=" "
                   required
                 />
               </FloatingLabel>
@@ -87,6 +94,7 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onSubmit, onClose }) =>
                   name="startDate"
                   value={formData.startDate}
                   onChange={handleChange}
+                  placeholder=" "
                   required
                 />
               </FloatingLabel>
@@ -99,7 +107,7 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onSubmit, onClose }) =>
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
-                  placeholder="Full-time employment / Freelance"
+                  placeholder=" "
                 />
               </FloatingLabel>
             </Col>
@@ -111,7 +119,7 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onSubmit, onClose }) =>
                   name="monthlyIncome"
                   value={formData.monthlyIncome}
                   onChange={handleChange}
-                  placeholder="45000"
+                  placeholder=" "
                   min="0"
                   step="0.01"
                   required
@@ -126,7 +134,7 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onSubmit, onClose }) =>
                   name="monthlyExpenses"
                   value={formData.monthlyExpenses}
                   onChange={handleChange}
-                  placeholder="18000"
+                  placeholder=" "
                   min="0"
                   step="0.01"
                   required
@@ -135,31 +143,32 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onSubmit, onClose }) =>
             </Col>
           </Row>
 
-          <div className="mt-4 p-3 bg-light rounded">
+          <div className="mt-4 p-3 rounded" style={{ backgroundColor: '#f8f9fa' }}>
             <div className="row">
               <div className="col-md-6">
                 <div className="d-flex justify-content-between mb-2">
-                  <span className="text-muted">Monthly Income:</span>
-                  <span className="fw-bold text-success">
+                  <span className="text-muted roboto-font">Monthly Income:</span>
+                  <span className="roboto-font fw-bold" style={{ color: '#51cf66' }}>
                     R{formData.monthlyIncome.toLocaleString()}
                   </span>
                 </div>
               </div>
               <div className="col-md-6">
                 <div className="d-flex justify-content-between mb-2">
-                  <span className="text-muted">Monthly Expenses:</span>
-                  <span className="fw-bold text-warning">
+                  <span className="text-muted roboto-font">Monthly Expenses:</span>
+                  <span className="roboto-font fw-bold" style={{ color: '#ffc107' }}>
                     R{formData.monthlyExpenses.toLocaleString()}
                   </span>
                 </div>
               </div>
               <div className="col-12">
                 <div className="d-flex justify-content-between mt-2 pt-2 border-top">
-                  <span className="text-muted">Net Monthly Income:</span>
-                  <span className={`fw-bold ${
-                    (formData.monthlyIncome - formData.monthlyExpenses) >= 0 ? 'text-info' : 'text-danger'
-                  }`}>
-                    R{(formData.monthlyIncome - formData.monthlyExpenses).toLocaleString()}
+                  <span className="text-muted roboto-font">Net Monthly Income:</span>
+                  <span
+                    className="roboto-font fw-bold"
+                    style={{ color: netIncome >= 0 ? '#17a2b8' : '#ff6b6b' }}
+                  >
+                    R{netIncome.toLocaleString()}
                   </span>
                 </div>
               </div>
@@ -167,11 +176,18 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onSubmit, onClose }) =>
           </div>
 
           <div className="d-flex justify-content-end gap-2 mt-4">
-            <Button variant="outline-secondary" onClick={onClose}>
+            <Button
+              variant="outline-secondary"
+              onClick={onClose}
+              className="btn-custom roboto-font"
+            >
               <FiX className="me-2" />
               Cancel
             </Button>
-            <Button type="submit" variant="primary" className="btn-primary-custom">
+            <Button
+              type="submit"
+              className="btn-custom btn-primary-custom text-white roboto-font"
+            >
               <FiSave className="me-2" />
               {income ? 'Update Income Stream' : 'Save Income Stream'}
             </Button>
