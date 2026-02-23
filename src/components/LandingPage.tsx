@@ -4,18 +4,22 @@ import { FiTrendingUp, FiShield, FiPieChart, FiTarget, FiBook, FiCheck } from 'r
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 
-interface LandingPageProps {
-  onLogin?: () => void;
-}
-
-const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
+const LandingPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {
-    if (onLogin) {
-      onLogin(); 
+    navigate('/login', { state: { showSignup: true } });
+  };
+
+  const handleSignIn = () => {
+    navigate('/login', { state: { showSignup: false } });
+  };
+
+  const handleLearnMore = () => {
+    const featuresSection = document.getElementById('features');
+    if (featuresSection) {
+      featuresSection.scrollIntoView({ behavior: 'smooth' });
     }
-    navigate('/dashboard'); 
   };
 
   const features = [
@@ -80,11 +84,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
 
   return (
     <div className="landing-page">
-      <Navbar onLogin={handleGetStarted} />
-      <section className="hero-section py-5" id="home" style={{ 
-        background: 'linear-gradient(135deg, #e8f8f5 0%, #ffffff 100%)',
-        minHeight: '90vh'
-      }}>
+      <Navbar onSignIn={handleSignIn} onGetStarted={handleGetStarted} />
+
+      <section className="hero-section" id="home" style={{ 
+  background: 'linear-gradient(135deg, #e8f8f5 0%, #ffffff 100%)',
+  minHeight: '100vh',
+  paddingTop: '80px',
+  paddingBottom: '60px'
+}}>
         <Container>
           <Row className="align-items-center py-5">
             <Col lg={6} className="mb-5 mb-lg-0">
@@ -135,7 +142,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                     color: '#17a2b8',
                     borderRadius: '8px'
                   }}
-                  onClick={() => navigate('/education')}
+                  onClick={handleLearnMore}
                 >
                   Learn More
                 </Button>
@@ -165,18 +172,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                       </Badge>
                     </div>
                     <div className="d-flex justify-content-center my-4">
-                      <div className="position-relative">
-                        <div className="rounded-circle d-flex align-items-center justify-content-center" 
-                             style={{ 
-                               width: '200px', 
-                               height: '200px',
-                               background: 'linear-gradient(135deg, #17a2b8 0%, #138496 100%)',
-                               boxShadow: '0 8px 24px rgba(23, 162, 184, 0.3)'
-                             }}>
-                          <div className="text-center text-white">
-                            <div className="fs-2 fw-bold">R45,000</div>
-                            <div style={{ opacity: 0.9 }}>Total Value</div>
-                          </div>
+                      <div className="rounded-circle d-flex align-items-center justify-content-center" 
+                           style={{ 
+                             width: '200px', 
+                             height: '200px',
+                             background: 'linear-gradient(135deg, #17a2b8 0%, #138496 100%)',
+                             boxShadow: '0 8px 24px rgba(23, 162, 184, 0.3)'
+                           }}>
+                        <div className="text-center text-white">
+                          <div className="fs-2 fw-bold">R45,000</div>
+                          <div style={{ opacity: 0.9 }}>Total Value</div>
                         </div>
                       </div>
                     </div>
@@ -196,37 +201,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                     </div>
                   </div>
                 </div>
-
                 <div className="position-absolute floating-element" style={{ top: '20px', right: '-20px' }}>
                   <div className="rounded-circle d-flex align-items-center justify-content-center shadow-sm" 
-                       style={{ 
-                         width: '60px', 
-                         height: '60px', 
-                         backgroundColor: '#fff3e0',
-                         border: '3px solid white'
-                       }}>
+                       style={{ width: '60px', height: '60px', backgroundColor: '#fff3e0', border: '3px solid white' }}>
                     <span style={{ fontSize: '1.5rem' }}>📊</span>
                   </div>
                 </div>
                 <div className="position-absolute floating-element" style={{ bottom: '80px', left: '-30px', animationDelay: '1s' }}>
                   <div className="rounded-circle d-flex align-items-center justify-content-center shadow-sm" 
-                       style={{ 
-                         width: '55px', 
-                         height: '55px', 
-                         backgroundColor: '#e8f5e9',
-                         border: '3px solid white'
-                       }}>
+                       style={{ width: '55px', height: '55px', backgroundColor: '#e8f5e9', border: '3px solid white' }}>
                     <span style={{ fontSize: '1.3rem' }}>💰</span>
                   </div>
                 </div>
                 <div className="position-absolute floating-element" style={{ top: '50%', right: '-15px', animationDelay: '2s' }}>
                   <div className="rounded-circle d-flex align-items-center justify-content-center shadow-sm" 
-                       style={{ 
-                         width: '50px', 
-                         height: '50px', 
-                         backgroundColor: '#e3f2fd',
-                         border: '3px solid white'
-                       }}>
+                       style={{ width: '50px', height: '50px', backgroundColor: '#e3f2fd', border: '3px solid white' }}>
                     <span style={{ fontSize: '1.2rem' }}>📈</span>
                   </div>
                 </div>
@@ -240,15 +229,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         <Container>
           <Row className="mb-5">
             <Col className="text-center">
-              <p className="text-uppercase mb-3" style={{ 
-                letterSpacing: '2px', 
-                fontSize: '0.875rem',
-                color: '#17a2b8',
-                fontWeight: '600'
-              }}>
+              <p className="text-uppercase mb-3" style={{ letterSpacing: '2px', fontSize: '0.875rem', color: '#17a2b8', fontWeight: '600' }}>
                 OUR FEATURES
               </p>
-              <h2 className="ubuntu-font fw-bold display-5 mb-3" style={{ color: '#2c3e50' }}>
+              <h2 className="fw-bold display-5 mb-3" style={{ color: '#2c3e50' }}>
                 Everything You Need for Financial Success
               </h2>
               <p className="text-muted lead mx-auto" style={{ maxWidth: '700px' }}>
@@ -256,20 +240,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
               </p>
             </Col>
           </Row>
-          
           <Row className="g-4">
             {features.map((feature, index) => (
               <Col key={index} lg={4} md={6}>
-                <Card className="border-0 h-100 card-hover" style={{
-                  borderRadius: '16px',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                  transition: 'all 0.3s ease'
-                }}>
+                <Card className="border-0 h-100" style={{ borderRadius: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', transition: 'all 0.3s ease' }}>
                   <Card.Body className="p-4">
                     <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-4" 
                          style={{
-                           width: '70px',
-                           height: '70px',
+                           width: '70px', height: '70px',
                            backgroundColor: feature.color === 'primary' ? '#e3f2fd' :
                                           feature.color === 'success' ? '#e8f5e9' :
                                           feature.color === 'warning' ? '#fff3e0' :
@@ -287,10 +265,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                         {feature.icon}
                       </span>
                     </div>
-                    <Card.Title className="ubuntu-font fw-bold mb-3" style={{ 
-                      color: '#2c3e50',
-                      fontSize: '1.25rem'
-                    }}>
+                    <Card.Title className="fw-bold mb-3" style={{ color: '#2c3e50', fontSize: '1.25rem' }}>
                       {feature.title}
                     </Card.Title>
                     <Card.Text style={{ color: '#6c757d', lineHeight: '1.6' }}>
@@ -308,20 +283,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         <Container>
           <Row className="mb-5">
             <Col className="text-center">
-              <p className="text-uppercase mb-3" style={{ 
-                letterSpacing: '2px', 
-                fontSize: '0.875rem',
-                color: '#17a2b8',
-                fontWeight: '600'
-              }}>
+              <p className="text-uppercase mb-3" style={{ letterSpacing: '2px', fontSize: '0.875rem', color: '#17a2b8', fontWeight: '600' }}>
                 HOW IT WORKS
               </p>
-              <h2 className="ubuntu-font fw-bold display-5 mb-3" style={{ color: '#2c3e50' }}>
+              <h2 className="fw-bold display-5 mb-3" style={{ color: '#2c3e50' }}>
                 Simple Steps to Financial Empowerment
               </h2>
             </Col>
           </Row>
-          
           <Row className="g-4">
             {[
               { num: 1, title: 'Sign Up Free', desc: 'Create your account in under 2 minutes', color: '#17a2b8' },
@@ -332,24 +301,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
               <Col key={index} md={3} className="text-center">
                 <div className="position-relative mb-4">
                   <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-sm" 
-                       style={{ 
-                         width: '80px', 
-                         height: '80px',
-                         backgroundColor: step.color,
-                         color: 'white'
-                       }}>
+                       style={{ width: '80px', height: '80px', backgroundColor: step.color, color: 'white' }}>
                     <span className="fw-bold display-6">{step.num}</span>
                   </div>
-                  {index < 3 && (
-                    <div className="position-absolute top-50 start-100 translate-middle d-none d-md-block" style={{ zIndex: -1 }}>
-                      <div style={{ 
-                        width: '100%', 
-                        height: '2px', 
-                        backgroundColor: step.color,
-                        opacity: 0.3
-                      }}></div>
-                    </div>
-                  )}
                 </div>
                 <h5 className="fw-bold mb-2" style={{ color: '#2c3e50' }}>{step.title}</h5>
                 <p className="text-muted small">{step.desc}</p>
@@ -363,21 +317,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         <Container>
           <Row className="mb-5">
             <Col className="text-center">
-              <p className="text-uppercase mb-3" style={{ 
-                letterSpacing: '2px', 
-                fontSize: '0.875rem',
-                color: '#17a2b8',
-                fontWeight: '600'
-              }}>
+              <p className="text-uppercase mb-3" style={{ letterSpacing: '2px', fontSize: '0.875rem', color: '#17a2b8', fontWeight: '600' }}>
                 TESTIMONIALS
               </p>
-              <h2 className="ubuntu-font fw-bold display-5 mb-3" style={{ color: '#2c3e50' }}>
-                Trusted by Thousands
-              </h2>
+              <h2 className="fw-bold display-5 mb-3" style={{ color: '#2c3e50' }}>Trusted by Thousands</h2>
               <p className="text-muted lead">See what our users are saying</p>
             </Col>
           </Row>
-          
           <Row className="g-4">
             {testimonials.map((testimonial, index) => (
               <Col key={index} lg={4} md={6}>
@@ -390,14 +336,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   <Card.Body className="p-4">
                     <div className="d-flex align-items-center mb-4">
                       <div className="rounded-circle d-flex align-items-center justify-content-center me-3" 
-                           style={{ 
-                             width: '50px', 
-                             height: '50px',
-                             backgroundColor: index === 1 ? 'rgba(255,255,255,0.2)' : '#e9ecef'
-                           }}>
-                        <span className="fw-bold" style={{ 
-                          color: index === 1 ? 'white' : '#17a2b8' 
-                        }}>
+                           style={{ width: '50px', height: '50px', backgroundColor: index === 1 ? 'rgba(255,255,255,0.2)' : '#e9ecef' }}>
+                        <span className="fw-bold" style={{ color: index === 1 ? 'white' : '#17a2b8' }}>
                           {testimonial.avatar}
                         </span>
                       </div>
@@ -418,68 +358,38 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         </Container>
       </section>
 
-      <section className="py-5" style={{ 
-        background: 'linear-gradient(135deg, #17a2b8 0%, #138496 100%)',
-        color: 'white'
-      }}>
+      <section className="py-5" style={{ background: 'linear-gradient(135deg, #17a2b8 0%, #138496 100%)', color: 'white' }}>
         <Container>
           <Row className="py-5 align-items-center">
             <Col lg={6} className="mb-4 mb-lg-0">
-              <p className="text-uppercase mb-3" style={{ 
-                letterSpacing: '2px', 
-                fontSize: '0.875rem',
-                opacity: 0.9
-              }}>
+              <p className="text-uppercase mb-3" style={{ letterSpacing: '2px', fontSize: '0.875rem', opacity: 0.9 }}>
                 START TODAY
               </p>
-              <h2 className="ubuntu-font fw-bold display-5 mb-4">
-                Ready to Transform Your Financial Life?
-              </h2>
+              <h2 className="fw-bold display-5 mb-4">Ready to Transform Your Financial Life?</h2>
               <p className="lead mb-4" style={{ opacity: 0.9, maxWidth: '500px' }}>
                 Join thousands of users who have taken control of their finances with our platform
               </p>
               <div className="d-flex flex-wrap gap-3">
-                <Button 
-                  size="lg" 
-                  className="fw-bold px-5 py-3"
-                  style={{
-                    backgroundColor: 'white',
-                    border: 'none',
-                    color: '#17a2b8',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
-                  }}
+                <Button size="lg" className="fw-bold px-5 py-3"
+                  style={{ backgroundColor: 'white', border: 'none', color: '#17a2b8', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
                   onClick={handleGetStarted}
                 >
                   Start Free Trial
                 </Button>
-                <Button 
-                  size="lg" 
-                  className="fw-bold px-5 py-3"
-                  style={{
-                    backgroundColor: 'transparent',
-                    border: '2px solid white',
-                    color: 'white',
-                    borderRadius: '8px'
-                  }}
-                  onClick={() => navigate('/education')}
+                <Button size="lg" className="fw-bold px-5 py-3"
+                  style={{ backgroundColor: 'transparent', border: '2px solid white', color: 'white', borderRadius: '8px' }}
+                  onClick={handleLearnMore}
                 >
-                  Watch Demo
+                  Learn More
                 </Button>
               </div>
-              <p className="mt-3 small" style={{ opacity: 0.75 }}>
-                No credit card required • Cancel anytime
-              </p>
+              <p className="mt-3 small" style={{ opacity: 0.75 }}>No credit card required • Cancel anytime</p>
             </Col>
             <Col lg={6}>
               <div className="bg-white rounded-4 p-4 shadow-lg">
                 <div className="text-center mb-3">
                   <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                       style={{ 
-                         width: '80px', 
-                         height: '80px',
-                         backgroundColor: '#e0f7fa'
-                       }}>
+                       style={{ width: '80px', height: '80px', backgroundColor: '#e0f7fa' }}>
                     <span style={{ fontSize: '2rem' }}>💼</span>
                   </div>
                 </div>
@@ -499,11 +409,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             <Col lg={4} className="mb-4 mb-lg-0">
               <div className="d-flex align-items-center mb-3">
                 <div className="rounded-circle d-flex align-items-center justify-content-center me-2" 
-                     style={{ 
-                       width: '40px', 
-                       height: '40px',
-                       backgroundColor: '#17a2b8'
-                     }}>
+                     style={{ width: '40px', height: '40px', backgroundColor: '#17a2b8' }}>
                   <span className="text-white fw-bold">FT</span>
                 </div>
                 <span className="fw-bold fs-5">Financial Tracker</span>
@@ -515,123 +421,47 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             <Col lg={2} md={6} className="mb-4 mb-lg-0">
               <h6 className="fw-bold mb-3">Platform</h6>
               <ul className="list-unstyled">
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    Dashboard
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    Investments
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    Budget
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    Education
-                  </a>
-                </li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>Dashboard</a></li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>Investments</a></li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>Budget</a></li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>Education</a></li>
               </ul>
             </Col>
             <Col lg={2} md={6} className="mb-4 mb-lg-0">
               <h6 className="fw-bold mb-3">Resources</h6>
               <ul className="list-unstyled">
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    Help Center
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    Blog
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    Guides
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    FAQ
-                  </a>
-                </li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>Help Center</a></li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>Blog</a></li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>Guides</a></li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>FAQ</a></li>
               </ul>
             </Col>
             <Col lg={2} md={6} className="mb-4 mb-lg-0">
               <h6 className="fw-bold mb-3">Company</h6>
               <ul className="list-unstyled">
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    About Us
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    Careers
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    Contact
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    Press
-                  </a>
-                </li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>About Us</a></li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>Careers</a></li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>Contact</a></li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>Press</a></li>
               </ul>
             </Col>
             <Col lg={2} md={6}>
               <h6 className="fw-bold mb-3">Legal</h6>
               <ul className="list-unstyled">
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    Privacy Policy
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    Terms of Service
-                  </a>
-                </li>
-                <li className="mb-2">
-                  <a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>
-                    Cookie Policy
-                  </a>
-                </li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>Privacy Policy</a></li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>Terms of Service</a></li>
+                <li className="mb-2"><a href="#" className="text-white text-decoration-none" style={{ opacity: 0.8 }}>Cookie Policy</a></li>
               </ul>
             </Col>
           </Row>
-          
+
           <hr style={{ opacity: 0.2, margin: '2rem 0' }} />
-          
-          <Row className="align-items-center">
-            <Col md={6} className="text-center text-md-start mb-3 mb-md-0">
+
+          <Row>
+            <Col className="text-center">
               <p className="mb-0 small" style={{ opacity: 0.8 }}>
                 © {new Date().getFullYear()} Financial Literacy & Portfolio Tracker. All rights reserved.
               </p>
-            </Col>
-            <Col md={6} className="text-center text-md-end">
-              <div className="d-flex justify-content-center justify-content-md-end gap-3">
-                <a href="#" className="text-white" style={{ opacity: 0.8, fontSize: '1.2rem' }}>
-                  <i className="fab fa-facebook"></i>
-                </a>
-                <a href="#" className="text-white" style={{ opacity: 0.8, fontSize: '1.2rem' }}>
-                  <i className="fab fa-twitter"></i>
-                </a>
-                <a href="#" className="text-white" style={{ opacity: 0.8, fontSize: '1.2rem' }}>
-                  <i className="fab fa-linkedin"></i>
-                </a>
-                <a href="#" className="text-white" style={{ opacity: 0.8, fontSize: '1.2rem' }}>
-                  <i className="fab fa-instagram"></i>
-                </a>
-              </div>
             </Col>
           </Row>
         </Container>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Navbar, Container, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { FiMenu, FiX, FiUser, FiLogOut, FiSettings } from 'react-icons/fi';
+import { useAuth } from '../context/AuthContext';
 
 interface HeaderProps {
   sidebarOpen: boolean;
@@ -9,6 +10,16 @@ interface HeaderProps {
   isLoggedIn: boolean;
   onLogin: () => void;
   onLogout: () => void;
+}
+
+function formatName(rawName: string | null | undefined): string {
+  if (!rawName) return 'User';
+  return rawName
+    .replace(/[.,]/g, '')
+    .split(' ')
+    .filter(Boolean)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -20,6 +31,10 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { currentUser } = useAuth();
+
+  const displayName = formatName(currentUser?.displayName);
+  const firstName = displayName.split(' ')[0];
 
   return (
     <>
@@ -192,7 +207,6 @@ const Header: React.FC<HeaderProps> = ({
         className="shadow-sm header-navbar"
       >
         <Container fluid className="px-3 px-md-4">
-          {/* Left: Toggle + Brand */}
           <div className="d-flex align-items-center gap-2 gap-sm-3" style={{ minWidth: 0, flex: 1 }}>
             <button
               className={`sidebar-toggle-btn ${sidebarOpen ? 'active' : ''}`}
@@ -210,7 +224,6 @@ const Header: React.FC<HeaderProps> = ({
             </a>
           </div>
 
-          {/* Right: Actions */}
           <div className="header-actions">
             {isLoggedIn ? (
               <div className="header-dropdown">
@@ -220,7 +233,7 @@ const Header: React.FC<HeaderProps> = ({
                   aria-label="User menu"
                 >
                   <FiUser size={17} />
-                  <span className="user-btn-label">John Doe</span>
+                  <span className="user-btn-label">{firstName}</span>
                 </button>
 
                 {dropdownOpen && (
@@ -230,6 +243,13 @@ const Header: React.FC<HeaderProps> = ({
                       onClick={() => setDropdownOpen(false)}
                     />
                     <div className="header-dropdown-menu">
+                      <div className="px-3 py-2 mb-1" style={{ 
+                        borderBottom: '1px solid #e9ecef',
+                        color: '#6c757d',
+                        fontSize: '0.85rem'
+                      }}>
+                        {displayName}
+                      </div>
                       <button
                         className="header-dropdown-item roboto-font"
                         onClick={() => { navigate('/settings'); setDropdownOpen(false); }}
