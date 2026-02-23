@@ -96,15 +96,49 @@ const LoginPage: React.FC = () => {
         <Row className="justify-content-center">
           <Col md={10} lg={8} xl={6}>
 
-            {}
             <div style={{
               background: 'rgba(255,255,255,0.05)',
               backdropFilter: 'blur(20px)',
               border: '1px solid rgba(255,255,255,0.12)',
               borderRadius: '24px',
               padding: '48px',
-              boxShadow: '0 25px 60px rgba(0,0,0,0.4)'
+              boxShadow: '0 25px 60px rgba(0,0,0,0.4)',
+              position: 'relative'
             }}>
+
+              {}
+              <button
+                onClick={() => navigate('/')}
+                style={{
+                  position: 'absolute',
+                  top: '16px',
+                  right: '20px',
+                  background: 'rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  borderRadius: '50%',
+                  width: '32px',
+                  height: '32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'rgba(255,255,255,0.6)',
+                  fontSize: '1rem',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  lineHeight: 1
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.18)';
+                  (e.currentTarget as HTMLButtonElement).style.color = 'white';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.08)';
+                  (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.6)';
+                }}
+                aria-label="Close"
+              >
+                ✕
+              </button>
 
               {}
               <div className="text-center mb-4">
@@ -342,7 +376,7 @@ const LoginPage: React.FC = () => {
               <div className="text-center mt-4">
                 <span
                   onClick={() => navigate('/')}
-                  style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem', cursor: 'pointer', transition: 'color 0.2s' }}
+                  style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem', cursor: 'pointer' }}
                 >
                   ← Back to home
                 </span>
@@ -353,7 +387,6 @@ const LoginPage: React.FC = () => {
         </Row>
       </Container>
 
-      {}
       <style>{`
         input::placeholder { color: rgba(255,255,255,0.3) !important; }
         input:-webkit-autofill {
