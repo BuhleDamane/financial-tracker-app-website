@@ -12,7 +12,8 @@ The app presents users with **broken code** that they must fix, with challenges 
 
 | Challenge Selection | Split-Screen Editor |
 |:---:|:---:|
-| ![Challenge Selection](https://github.com/user-attachments/assets/your-debug-challenge-image-id) | ![Code Editor](https://github.com/user-attachments/assets/your-debug-editor-image-id) |
+| <img width="960" height="568" alt="ft1" src="https://github.com/user-attachments/assets/97ea4ea8-7934-4d43-a3ce-fdf32351d5ee" />
+ | ![Code Editor](https://github.com/user-attachments/assets/your-debug-editor-image-id) |
 
 | Hint System | Progress Tracking |
 |:---:|:---:|
