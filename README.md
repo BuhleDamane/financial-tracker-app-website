@@ -18,7 +18,8 @@ The app presents users with **broken code** that they must fix, with challenges 
 
 | Hint System | Progress Tracking |
 |:---:|:---:|
-| ![Hint System](https://github.com/user-attachments/assets/your-debug-hint-image-id) | ![Progress Dashboard](https://github.com/user-attachments/assets/your-debug-progress-image-id) |
+| <img width="960" height="568" alt="ft3" src="https://github.com/user-attachments/assets/8366914e-f8bf-4bfb-a447-294f59bc1fc6" />
+ | ![Progress Dashboard](https://github.com/user-attachments/assets/your-debug-progress-image-id) |
 
 ---
 
