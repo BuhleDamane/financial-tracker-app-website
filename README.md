@@ -10,10 +10,11 @@ The app presents users with **broken code** that they must fix, with challenges 
 
 ## 📸 Project Snapshots
 
-| Challenge Selection | Split-Screen Editor |
+| Home Page | Login |
 |:---:|:---:|
 | <img width="960" height="568" alt="ft1" src="https://github.com/user-attachments/assets/97ea4ea8-7934-4d43-a3ce-fdf32351d5ee" />
- | ![Code Editor](https://github.com/user-attachments/assets/your-debug-editor-image-id) |
+ | <img width="960" height="568" alt="ft2" src="https://github.com/user-attachments/assets/7edbb3fa-e2f7-4f12-b8f8-94e3d735d4c1" />
+ |
 
 | Hint System | Progress Tracking |
 |:---:|:---:|
